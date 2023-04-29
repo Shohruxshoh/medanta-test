@@ -1,0 +1,952 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Ro'yhatdan o'tish</title>
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+
+    <!-- favicon -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="{% static 'assets/libs/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/checknet.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/signup/style.css' %}">
+
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"
+          integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    {#    <link rel="stylesheet" href="{% static 'plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">#}
+    {#    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">#}
+    {#    <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/signup/responsive.css' %}">
+
+
+    <style>
+        .action-button-previous:hover {
+            color: #fff;
+        }
+
+        input::placeholder {
+            opacity: 0.7%
+
+        }
+    </style>
+
+</head>
+
+<body>
+<style>
+    #birthday, .birthday_datepicker_icon:hover {
+        cursor: pointer;
+    }
+
+</style>
+<!-- Hero Start -->
+<section class="py-3 mt-2 bg-info text-light">
+    <div class="container">
+        <div class="row text-center justify-content-around align-items-center">
+            <div class="col-12" style="">
+                <h1>E-RIB TIZIMIDA RO'YXATDAN O'TISH</h1>
+            </div>
+            {#            <div class="col-2">#}
+            {#                <img style="width: 90px" src="{% static 'img/yhxb.png' %}"#}
+            {#                     alt="{% trans 'Управление безопасности дорожного движения!' %}"/>#}
+            {#            </div>#}
+            {#            <div class="col-5">#}
+            {#                <h1>Ichki ishlar Vazirligi YHXB</h1>#}
+            {#            </div>#}
+        </div>
+    </div>
+</section>
+<div class="alert alert-info text-center"><h3>Tizim bo'yicha savollar
+    bo'lganda
+    <a href="https://t.me/onlayn_gai" style="color: #005eec; text-decoration: none"><i
+            class="fab fa-telegram"></i>
+        Telegram guruh</a>ga yozing yoki <a href="tel:972800809">972800809</a> raqamiga qo'ng'iroq qiling</h3>
+</div>
+<div class="row ml-2 mr-2">
+    <div class="col-12 text-center p-0 mt-3 mb-2">
+        <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+            <div class="row">
+                <div class="col-md-12 mx-0">
+                    <div id="msform">
+                        <!-- progressbar -->
+                        <ul id="progressbar">
+                            <li class="active not_copy" id="account"><strong>Account</strong></li>
+                            <li class="not_copy" id="personal"><strong>Foydalanuvchi</strong></li>
+                            <li class="not_copy" id="payment"><strong>Passport</strong></li>
+                        </ul> <!-- fieldsets -->
+                        <fieldset id="fieldset1">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-xl-6 col-lg-7 col-md-8 col-sm-9">
+                                    <div class="form-card">
+                                        <h2 class="fs-title not_copy">Account ma'lumotlari</h2>
+                                        <label class="not_copy" for="phone">Tel raqam:</label>
+                                        <input
+                                                type="text" id="phone" class="form-control"
+                                        />
+                                        <br>
+                                        <input type="checkbox"
+                                               style="float: left; cursor: pointer; margin-right: 5px; margin-top: 5px; width: auto !important;"
+                                               id="accept"
+                                               name="accept" value="true" required>
+
+                                        <a style="float: left; text-decoration: none; " class="not_copy" id="agree"
+                                           href="#">Shartlar bilan
+                                            tanishib
+                                            chiqdim</a>
+
+                                        <button style="float: right; height: 50%; color:white" id="get_code"
+                                                type="button"
+                                                class="btn btn-info">Tasdiqlash kodini olish
+                                        </button>
+                                        <label id="label_confirm" style="width: 100%; display: none" class="not_copy"
+                                               for="input_confirm">Tasdiqlash kodi:</label>
+                                        <input id="input_confirm" style="display: none; margin-bottom: 0 !important;"
+                                               type="text" name="input_confirm" class="form-control"
+                                               placeholder="Tasdiqlash kodini kiriting..."/>
+                                        <div style="display: none" class="valid-feedback">Muvaffaqiyatli to'ldirildi
+                                        </div>
+                                        <div style="display: none" class='invalid-feedback'>Parol noto'g'ri
+                                        </div>
+                                        <br>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{% url 'user:login_view' %}" class="previous action-button-previous"
+                               style="text-decoration: none"
+                            >Tizimga kirish</a>
+                            <button type="button" id="next1" name="next" class="action-button">
+                                Tasdiqlash
+                            </button>
+                        </fieldset>
+                        <fieldset id="fieldset2">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-xl-6 col-lg-7 col-md-8 col-sm-9">
+                                    <form action="#" id="save_user_form" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-card">
+                                            <h2 class="fs-title not_copy">Foydalanuvchi ma'lumotlari</h2>
+                                            <input type="hidden" id="render_phone" name="phone">
+                                            <div class="row">
+                                                <div class="col-12 col-xl-6">
+                                                    <label style="width: 100%;" class="not_copy label_required"
+                                                           for="last_name">Familiya</label>
+                                                    <input type="text" name="last_name" id="last_name"
+                                                           class="form-control"
+                                                           required
+                                                           autocomplete="disabled"
+                                                           placeholder="Masalan: Yoqubov"/>
+                                                </div>
+                                                <div class="col-12 col-xl-6">
+                                                    <label style="width: 100%;" class="not_copy label_required"
+                                                           for="first_name">Ism</label>
+                                                    <input type="text" name="first_name" id="first_name"
+                                                           class="form-control"
+                                                           required
+                                                           autocomplete="disabled"
+                                                           placeholder="Masalan: Sirojiddin"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-xl-6">
+                                                    <label style="width: 100%;" class="not_copy label_required"
+                                                           for="middle_name">Otasining ismi</label>
+                                                    <input type="text" name="middle_name" id="middle_name"
+                                                           class="form-control"
+                                                           required
+                                                           autocomplete="disabled"
+                                                           placeholder="Masalan: Tojiddinovich"/>
+                                                </div>
+                                                <div class="col-12 col-xl-6 birthday">
+                                                    <label style="width: 100%;" class="not_copy label_required"
+                                                           for="birthday">Tug'ilgan vaqt</label>
+                                                    <div class="input-group mb-2">
+                                                        <input id='birthday' name="birthday"
+                                                               type="date"
+                                                               class="form-control"/>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-12 col-xl-6 region">
+                                                    <label class="label_required not_copy" for="region">Viloyat</label>
+                                                    <select name="region" class="form-control select2" id="region"
+                                                            required>
+                                                        <option value="">--Viloyatni tanlang--</option>
+                                                        {% for region in regions %}
+                                                            <option value="{{ region.pk }}">{{ region.title }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 col-xl-6 district">
+                                                    <label class="label_required not_copy"
+                                                           for="district">Tuman/Shahar</label>
+                                                    <select name="district" class="form-control select2" id="district"
+                                                            required>
+                                                        <option value="">--Tumanni tanlang--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row mb-3">
+                                                <label class="not_copy col-4 col-xl-3 col-form-label text-start"
+                                                       for="is_quarter">{% trans 'Mahallani kiritasizmi?' %}</label>
+                                                <div class="col-8 col-xl-9">
+                                                    <div class="row justify-content-start mt-1">
+                                                        <div class="col-3 col-md-2 col-lg-2 col-xl-2">
+                                                            <input type="radio" id="is_quarter_yes" name="is_quarter"
+                                                                   class="form-check-input" checked>
+                                                            <label class="form-check-label"
+                                                                   for="is_quarter_yes">Ha</label>
+                                                        </div>
+                                                        <div class="col-3 col-md-2 col-lg-2 col-xl-2">
+                                                            <input type="radio" id="is_quarter_no" name="is_quarter"
+                                                                   class="form-check-input">
+                                                            <label class="form-check-label"
+                                                                   for="is_quarter_no">Yoq</label>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-xl-6 quarter">
+                                                    <label class="label_required not_copy" for="quarter">Mahalla</label>
+                                                    <select name="quarter" class="form-control select2" id="quarter"
+                                                            required="required">
+                                                        <option value="">--Mahallani tanlang--</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 col-xl-6">
+                                                    <label class="label_required not_copy" for="address">Manzil</label>
+                                                    <input type="text" class="form-control" id="address" name="address"
+                                                           required autocomplete="disabled"
+                                                           placeholder="Masalan: M.Iqbol ko'chasi 76-uy" value=""/>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <input type="button" id="prev2"
+                                                   class="previous action-button-previous"
+                                                   value="Oldingi"/>
+                                            <input type="submit" id="next2" class="action-button"
+                                                   value="Keyingi"/>
+                                            <input type="button" style="display: none" id="refresh_next2"
+                                                   class="action-button"
+                                                   value="Keyingi"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset id="fieldset3">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-xl-6 col-lg-7 col-md-8 col-sm-9">
+                                    <form action="#" id="save_passport_form" method="post">
+                                        <div class="form-card">
+                                            <h2 class="fs-title">Passport ma'lumotlari</h2>
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-12 col-lg-5 col-md-12 col-xl-4 col-sm-12"><label
+                                                        class="pay label_required not_copy" for="passport_seriya">Passport
+                                                    seriya</label>
+                                                    <input type="text" id="passport_seriya" class="form-control"
+                                                           name="passport_seriya"
+                                                           placeholder="Masalan: AA" autocomplete="off"/>
+                                                </div>
+                                                <div class="col-12 col-lg-7 col-md-12 col-xl-8 col-sm-12">
+                                                    <label for="passport_number"
+                                                           class="pay label_required not_copy">Passport raqam</label>
+                                                    <input type="number" id="passport_number" class="form-control"
+                                                           name="passport_number"
+                                                           autocomplete="off" placeholder="Masalan: 3870293"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-lg-12 col-md-12 col-xl-6 col-sm-12">
+                                                    <label class="label_required not_copy" for="issue_by_whom">Kim
+                                                        tomonidan
+                                                        berilgan</label>
+                                                    <input type="text"
+                                                           id="issue_by_whom" class="form-control" name="issue_by_whom"
+                                                           autocomplete="off" placeholder="Masalan: BUXORO SHAHAR IIB"/>
+                                                </div>
+                                                {#                                                <div class="col-12 col-lg-12 col-md-12 col-xl-6 col-sm-12">#}
+                                                {#                                                    <label#}
+                                                {#                                                            class="label_required not_copy">JShShIR</label>#}
+                                                {#                                                    <input type="text" style="margin-bottom: 0" name="person_id"#}
+                                                {#                                                           class="form-control"#}
+                                                {#                                                           id="person_id"#}
+                                                {#                                                           placeholder=""/>#}
+                                                {#                                                    <p style="font-size: small; margin-bottom: 0">Jismoniy shaxsning#}
+                                                {#                                                        shaxsiy#}
+                                                {#                                                        identifikatsiya#}
+                                                {#                                                        raqamini#}
+                                                {#                                                        kiriting</p>#}
+                                                {#                                                </div>#}
+                                            </div>
+                                            {#                                            <div class="row mt-2">#}
+                                            {#                                                <div class="col-12 col-lg-5 col-md-5 col-xl-5 col-sm-5">#}
+                                            {#                                                    <img class="img-responsive mb-2"#}
+                                            {#                                                         style="width: 200px; margin: 0 auto" height="auto"#}
+                                            {#                                                         src="{% static 'img/passport.jpg' %}"#}
+                                            {#                                                         alt="JShShIR">#}
+                                            {#                                                </div>#}
+                                            {#                                            </div>#}
+                                        </div>
+
+                                        <input type="button" name="Previous" class="action-button-previous"
+                                               id="prev3" value="Oldingi"/>
+                                        <button type="submit" id="next3" style="width: 9rem" class="action-button">
+                                            Tizimga kirish
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'assets/libs/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap -->
+<script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="{% static 'assets/libs/moment/min/moment.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"
+        integrity="sha512-VpQwrlvKqJHKtIvpL8Zv6819FkTJyE1DoVNH0L2RLn8hUPjRjkS/bCYurZs0DX9Ybwu9oHRHdBZR9fESaq8Z8A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/responsive.js' %}"></script>
+<script src="{% static 'js/signup/sign_up.js' %}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="{% static 'assets/libs/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-notify@3.1.3/bootstrap-notify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script src="{% static 'assets/libs/axios/axios.min.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+<script type="text/javascript">
+    var dateReg = /^(0?[1-9]|[12][0-9]|3[01])[./-](0?[1-9]|1[012])[./-]\d{4}$/
+    $(function () {
+        $('.select2').select2({
+            theme: "bootstrap",
+            width: 'auto',
+        })
+    })
+    $(document).ready(function () {
+
+        var csrftoken = getCookie('csrftoken')
+
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken)
+            },
+            error: function (response) {
+                if (response.status === 401) {
+                    tokenInvalid()
+                }
+            }
+        })
+
+        {#$('#fieldset1').hide()#}
+        {#$('#fieldset2').show()#}
+
+        var phone_mask = false
+
+        $('#phone').inputmask('+\\9\\98 (99) 999-99-99', {
+            "oncomplete": function () {
+                $('#render_phone').val(encodeURIComponent($('#phone').val()))
+                $('#phone').css('border-color', 'unset')
+                phone_mask = true
+            }, 'autoUnmask': true,
+            "onincomplete": function () {
+                $('#phone').css('border-color', 'red')
+                phone_mask = false
+            },
+        });
+        $('#input_confirm').inputmask('999999');
+        $('#person_id').inputmask('99999999999999');
+
+        $('#passport_seriya').inputmask({casing: 'upper'});
+        $('#issue_by_whom').inputmask({casing: 'upper'});
+
+        $('input[name="is_quarter"]').on('change', function () {
+            if ($('#is_quarter_yes').prop('checked')) {
+                $('.quarter').show()
+                $('#quarter').attr('name', 'quarter')
+            } else {
+                $('.quarter').hide()
+                $('#quarter').removeAttr('name')
+            }
+        })
+        $('#accept').on('change', function () {
+            if ($(this).prop('checked')) {
+                $('#agree').css('color', 'blue')
+                instruction_sweet()
+            } else {
+                $('#agree').css('color', 'red')
+            }
+        })
+
+
+        $('#agree').on('click', function () {
+            instruction_sweet()
+        })
+
+        $('#region').change(function () {
+            var SelectedRegion = $(this).children("option:selected").val()
+            $.ajax({
+                type: "GET",
+                url: "{% url 'user:get_district' %}",
+                data: {
+                    'region': SelectedRegion, // from form
+                },
+                success: function (message) {
+                    $('#district').empty().append(message)
+                    $('#district').css('border', '1px solid blue')
+                    setTimeout(function () {
+                        $('#district').css('border', '1px solid #ced4da')
+                    }, 1000)
+
+                }
+            });
+        })
+
+        $('#district').change(function () {
+            var SelectedDistrict = $(this).children("option:selected").val()
+            $.ajax({
+                type: "GET",
+                url: "{% url 'user:get_quarters' %}",
+                data: {
+                    'district': SelectedDistrict, // from form
+                },
+                success: function (message) {
+                    $('#quarter').empty().append(message)
+                    $('#quarter').css('border', '1px solid blue')
+                    setTimeout(function () {
+                        $('#quarter').css('border', '1px solid #ced4da')
+                    }, 1000)
+
+                }
+            });
+        })
+        var password
+        $('#get_code').on('click', function () {
+            if (phone_mask) {
+                if ($('#accept').prop('checked')) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'user:get_code' %}",
+                        data: {
+                            'phone': encodeURIComponent($('#phone').val()), // from form
+                        },
+                        statusCode: {
+                            200: function (res) {
+
+                                $("#fieldset1").keyup(function (event) {
+                                    if (event.keyCode === 13) {
+                                        $("#next1").click();
+                                    }
+                                });
+
+                                {#swal.fire(#}
+                                {#    'Tasdiqlash kodi',#}
+                                {#    `${res['code']}`,#}
+                                {#    'success'#}
+                                {#)#}
+                                $.notifyDefaults({
+                                    type: 'warning',
+                                    allow_dismiss: false,
+                                    animate: {
+                                        enter: 'animated fadeInRight',
+                                        exit: 'animated fadeOutRight'
+                                    },
+                                });
+                                $.notify({
+                                    icon: 'glyphicon glyphicon-envelope',
+                                    message: `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">\n' +
+                        '  <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>\n' +
+                        '</svg>  +998${encodeURIComponent($('#phone').val())} raqamga tasdiqlash kodi yuborildi!`
+                                });
+
+                                $("#get_code").attr("disabled", true);
+                                $("#accept").attr("disabled", true);
+
+
+                                let countdowntime = 300;
+                                let button = document.getElementById('get_code')
+
+
+                                let interval = setInterval(updateCountDown, 1000)
+
+                                function updateCountDown() {
+                                    let minutes = Math.floor(countdowntime / 60)
+                                    let seconds = countdowntime % 60
+
+                                    seconds = seconds < 10 ? '0' + seconds : seconds
+                                    minutes = minutes < 10 ? '0' + minutes : minutes
+
+                                    button.innerHTML = `${minutes}:${seconds} Qayta yuborish`
+
+                                    countdowntime--;
+
+                                    if (countdowntime < 0) {
+                                        clearInterval(interval)
+                                        $("#get_code").attr("disabled", false);
+                                        $("#accept").attr("disabled", false);
+                                        button.innerHTML = `Qayta yuborish`
+
+                                    }
+                                }
+
+                                $('#label_confirm').fadeIn(800)
+                                $('#input_confirm').fadeIn(800)
+                                $('#help_text_code').fadeIn(800)
+
+                                password = parseInt(res.password)
+
+                            },
+                            409: function (err) {
+                                console.log(err)
+                                alert('Bu raqam allaqachon ro\'yhatdan o\'tkazilgan!')
+                            },
+                            400: function (err) {
+                                console.log(err)
+                                alert('Xatolik yuz berdi! Sahifani ayngilab qayta urinib ko\'ring!')
+                            }
+                        },
+                    });
+
+
+                } else {
+                    $('#agree').css('color', 'red')
+                }
+
+            } else {
+                $('#phone').css('border-color', 'red')
+            }
+
+
+        })
+
+
+        $('#next1').on('click', function () {
+            var code = $('#input_confirm').val()
+
+            /*    pattern = /^\d{5}$/
+            if (test.match(pattern)) {  */
+            {#if (test === `${password}`) {#}
+            {#$('.invalid-feedback').css('display', 'none')#}
+            {#$('.valid-feedback').css('display', 'block')#}
+            {#$('#next1').prop('disabled', false)#}
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'user:verify_code' %}",
+                data: {
+                    'secret': getCookie('secret'),
+                    'code': code
+                },
+                statusCode: {
+                    200: function (res) {
+                        console.log(res)
+                        $('#fieldset1').hide()
+                        $('#fieldset2').css('opacity', '1').show()
+                        $('#input_confirm').prop('disabled', true)
+                        $('#phone').prop('disabled', true)
+                        $('#accept').prop('disabled', true)
+                        $('#personal').addClass('active')
+                        $('#next2').parent('.row').css('opacity', '1').show()
+                    },
+                    409: function (err) {
+                        console.log(err)
+                        alert('Bu raqam allaqachon ro\'yhatdan o\'tkazilgan!')
+                    },
+                    400: function (err) {
+                        console.log(err)
+                        alert(err.responseText)
+                        {#alert('Xatolik yuz berdi! Sahifani ayngilab qayta urinib ko\'ring!')#}
+                    }
+                },
+            });
+
+
+            //{#} else {#}
+            {#$('.invalid-feedback').css('display', 'block')#}
+            {#$('.valid-feedback').css('display', 'none')#}
+            {#$('#next1').prop('disabled', true)#}
+            //}
+
+            /*} else {
+                $('#next1').prop('disabled', true)
+                $('.invalid-feedback').css('display', 'block')
+                $('.valid-feedback').css('display', 'none')
+            }*/
+        });
+
+        {#$('#next1').on('click', function () {#}
+        {##}
+        {##}
+        {#    $('#fieldset1').hide()#}
+        {#    $('#fieldset2').css('opacity', '1').show()#}
+        {#    $('#input_confirm').prop('disabled', true)#}
+        {#    $('#accept').prop('disabled', true)#}
+        {#    $('#personal').addClass('active')#}
+        {#    $('#next2').parent('.row').css('opacity', '1').show()#}
+        {##}
+        //{#})#}
+        {##}
+        $('#refresh_next2').on('click', function () {
+            $('#fieldset2').hide()
+            $('#fieldset3').css('opacity', '1').show()
+            $('#save_passport_form').css('opacity', '1').show()
+            $('#input_confirm').prop('disabled', true)
+            $('#personal').addClass('active')
+            $('#next3').parent('.row').css('opacity', '1').show()
+
+        })
+
+        $('#prev2').on('click', function () {
+            $('#fieldset2').hide()
+            $('#fieldset1').css('opacity', '1').show()
+
+        })
+
+        $('#prev3').on('click', function () {
+            $('#fieldset3').hide()
+            $('#fieldset2').show()
+        })
+
+        $('#region').on('change', function () {
+            var selectedRegion = $(this).children("option:selected").val();
+            if (parseInt(selectedRegion)) {
+                $(this).valid()
+
+            }
+        })
+
+        $('#district').on('change', function () {
+            var selectedDistrict = $(this).children("option:selected").val();
+            if (parseInt(selectedDistrict)) {
+                $(this).valid()
+            }
+        })
+
+
+        $('#quarter').on('change', function () {
+            var selectedQuarter = $(this).children("option:selected").val();
+            if (parseInt(selectedQuarter)) {
+                $(this).valid()
+
+            }
+        })
+
+        var userId;
+        jQuery.validator.addMethod("noSpace", function (value, element) {
+            return value == '' || value.trim().length != 0;
+        }, "Iltimos, bo'sh joy qoldirmang!");
+        jQuery.validator.addMethod("customEmail", function (value, element) {
+            return this.optional(element) || /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value);
+        }, "Iltimos, to'g'ri elektron pochta manzilini kiriting!");
+        $.validator.addMethod("alphanumeric", function (value, element) {
+            return this.optional(element) || /^\w+$/i.test(value);
+        }, "Faqat harf va raqam kiriting!");
+
+        var $registrationForm = $('#save_user_form');
+        if ($registrationForm.length) {
+            $registrationForm.validate({
+                ignore: ":hidden",
+                rules: {
+                    //username is the name of the textbox
+                    last_name: {
+                        required: true,
+                        //alphanumeric is the custom method, we defined in the above
+                        noSpace: true,
+                    },
+                    first_name: {
+                        required: true,
+                        noSpace: true,
+                    },
+                    middle_name: {
+                        required: true,
+                        noSpace: true,
+                    },
+                    region: {
+                        required: true
+                    },
+                    district: {
+                        required: true
+                    },
+                    birthday: {
+                        required: true
+                    },
+                    quarter: {
+                        required: true
+                    },
+                    address: {
+                        required: true,
+                        noSpace: true,
+                    },
+
+                },
+                messages: {
+                    last_name: {
+                        required: 'Familiya kiritilmagan!',
+                    },
+                    first_name: {
+                        required: 'Ism kiritilmagan!',
+                    },
+                    middle_name: {
+                        required: 'Otasining ismi kiritilmagan!',
+                    },
+                    region: {
+                        required: 'Viloyat tanlanmagan!',
+                    },
+                    district: {
+                        required: 'Tuman tanlanmagan!',
+                    },
+                    birthday: {
+                        required: 'Tug\'ilgan vaqt tanlanmagan!',
+                    },
+                    quarter: {
+                        required: 'Mahalla tanlanmagan!',
+                    },
+                    address: {
+                        required: 'Yashash joyi kiritilmagan!',
+                    },
+
+
+                },
+                errorPlacement: function (error, element) {
+                    if (element.is("#region")) {
+                        error.appendTo(element.parents('.region'));
+                    } else if (element.is("#district")) {
+                        error.appendTo(element.parents('.district'));
+                    } else if (element.is("#quarter")) {
+                        error.appendTo(element.parents('.quarter'));
+                    } else if (element.is("#birthday")) {
+                        error.appendTo(element.parents('.birthday'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+
+                },
+
+                submitHandler: function (form) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'user:save_user_information' %}",
+                        data: $(form).serialize(),
+                        statusCode: {
+                            201: function (res) {
+                                console.log(res)
+                                userId = res.id
+
+                                $('#payment').addClass('active')
+                                $('#last_name').attr('disabled', true)
+                                $('#first_name').attr('disabled', true)
+                                $('#middle_name').attr('disabled', true)
+                                $('#birthday').attr('disabled', true)
+                                $('#region').attr('disabled', true)
+                                $('#district').attr('disabled', true)
+                                $('#quarter').attr('disabled', true)
+                                $('#address').attr('disabled', true)
+
+                                $("#fieldset2").keyup(function (event) {
+                                    if (event.keyCode === 13) {
+                                        $("#next2").click();
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/api/v1/user/auth/jwt/create/',
+                                    data: {
+                                        username: res.username,
+                                        password: res.turbo,
+                                    },
+                                    success: function (response) {
+                                        localStorage.setItem('access', response.access)
+                                        localStorage.setItem('refresh', response.refresh)
+
+
+                                        $('#next2').remove()
+                                        $('#refresh_next2').css('display', 'block')
+                                        $('#fieldset2').hide()
+                                        $('#fieldset3').show()
+                                    },
+                                    error: function (error) {
+                                        error_toast()
+                                    }
+                                })
+                            },
+                            error: function (err) {
+                                alert(err.responseText)
+                                console.log(err)
+                            }
+                        },
+
+                    });
+                    return false; // required to block normal submit since you used ajax
+                }
+            });
+        }
+
+        jQuery.validator.addMethod("personIdMaxLength", function (value, element) {
+            return this.optional(element) || /^\d{14}$/.test(value);
+        }, "JShShIR 14 raqamdan iborat bo'lishi kerak!");
+
+        var $PassportRegistrationForm = $('#save_passport_form');
+        if ($PassportRegistrationForm.length) {
+            $PassportRegistrationForm.validate({
+                ignore: ":hidden",
+                rules: {
+                    //username is the name of the textbox
+                    passport_seriya: {
+                        required: true,
+                        //alphanumeric is the custom method, we defined in the above
+                        alphanumeric: true,
+                        noSpace: true,
+                    },
+                    passport_number: {
+                        required: true,
+                        alphanumeric: true,
+                        noSpace: true,
+                    },
+                    issue_by_whom: {
+                        required: true,
+                        noSpace: true,
+                    },
+                    /* person_id: {
+                         required: true,
+                         personIdMaxLength: true
+                     },*/
+
+
+                },
+                messages: {
+                    passport_seriya: {
+                        required: 'Passport seriya kiritilmagan!',
+                    },
+                    passport_number: {
+                        required: 'Passpor raqami kiritilmagan!',
+
+                    },
+                    issue_by_whom: {
+                        required: 'Passport kim tomonidan berilganligi kiritilmagan!',
+                    },
+                    /*   person_id: {
+                           required: 'JShShIR raqami kiritilmagan!',
+                       },*/
+                },
+                errorPlacement: function (error, element) {
+                    if (element.is("#person_id")) {
+                        error.appendTo(element.siblings('p'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+
+                },
+
+                submitHandler: function (form, event) {
+                    event.preventDefault();
+                    console.log(form)
+                    $('#next3').attr('disabled', true)
+                    $('#next3').html('Tizimga kirish&nbsp<i class="fas fa-spinner fa-spin"></i>')
+
+                    $("#fieldset3").keyup(function (event) {
+                        if (event.keyCode === 13) {
+                            $("#next3").click();
+                        }
+                    });
+
+                    $.ajax({
+                        type: "PATCH",
+                        headers: {"Authorization": "Bearer " + localStorage.getItem('access')},
+                        url: "{% url 'user:save_user_passport' pk=12345 %}".replace(/12345/, userId.toString()),
+                        data: $(form).serialize(),
+                        success: function (res) {
+                            console.log(res)
+                            setTimeout(function () {
+                                window.location.href = '{% url "service:services_list" %}'
+                            }, 500)
+                        },
+                        error: function (err) {
+                            error_toast()
+                            alert(err.responseText)
+                            console.log(err)
+                            $('#next3').attr('disabled', false)
+                            $('#next3').html('Tizimga kirish')
+                        },
+                    });
+                    return false;
+                }
+            });
+        }
+
+    })
+
+</script>
+<script src="{% static 'js/jquery.checknet-1.6.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $.fn.checknet();
+    });
+</script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        m[i].l = 1 * new Date();
+        k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(86507697, "init", {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true
+    });
+</script>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/86507697" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

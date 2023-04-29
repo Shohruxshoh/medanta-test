@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {#        {{ form.as_p }}#}
+                            {#        <input type="submit">#}
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Telefon</label>
+                                <input type="text" class="form-control" readonly name="phone" id="phone"
+                                       placeholder="Telefon"
+                                       value="{{ user.phone }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" id="username"
+                                       placeholder="Username" value="{{ user.username }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Familiya</label>
+                                <input type="text" class="form-control" name="last_name" id="last_name"
+                                       placeholder="Familiya" value="{{ user.last_name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">Ism</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name"
+                                       placeholder="Ism"
+                                       value="{{ user.first_name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="middle_name" class="form-label">Sharifi</label>
+                                <input type="text" class="form-control" name="middle_name" id="middle_name"
+                                       placeholder="Sharifi" value="{{ user.middle_name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="region" class="form-label">Viloyat</label>
+                                <select name="region" id="region" class="form-control form-control-lg">
+                                    {% for region in form.region %}
+                                        {{ region }}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="district" class="form-label">Tuman</label>
+                                <select name="district" id="district" class="form-control form-control-lg">
+                                    {% for district in form.district %}
+                                        {{ district }}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Address</label>
+                                <input type="text" class="form-control" name="address" id="phone" placeholder="address"
+                                       value="{{ user.address }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="birthday" class="form-label">Tug'ilgan kuni</label>
+                                <input type="date" class="form-control" id="birthday" name="birthday"
+                                       placeholder="Tug'ilgan kuni" value="{{ user.birthday }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="region" class="form-label">Role</label>
+                                <select name="role" id="region" class="form-control form-control-lg">
+                                    <option selected value="{{ user.role }}">{{ user.get_role_display }}</option>
+                                    <option value="1">Direktor</option>
+                                    <option value="3">Shifokor</option>
+                                    <option value="2">Hamshira</option>
+                                    <option value="4">Qabulxona</option>
+                                    <option value="5">Hisobchi</option>
+                                    <option value="6">Menejer</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="passport_seria" class="form-label">Passport seria</label>
+                                <input type="text" class="form-control" name="passport_seria" id="passport_seria"
+                                       placeholder="Passport seria" value="{{ user.passport_seria }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="passport_number" class="form-label">Passport raqam</label>
+                                <input type="number" class="form-control" name="passport_number" id="passport_number"
+                                       placeholder="Passport raqam" value="{{ user.passport_number }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="person_id" class="form-label">JShShIR</label>
+                                <input type="text" class="form-control" id="person_id" name="person_id"
+                                       placeholder="JShShIR" value="{{ user.person_id }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gender" class="form-label">Jinsi</label>
+                                <select name="gender" id="gender" class="form-control form-control-lg">
+                                    <option selected value="{{ user.gender }}">{% if user.gender == 0 %}
+                                        Erkak
+                                    {% else %}
+                                        Ayol
+                                    {% endif %}</option>
+                                    <option value="0">Erkak</option>
+                                    <option value="1">Ayol</option>
+                                </select>
+                            </div>
+
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Yangilash">
+                                <a href="{% url 'user:employee-list' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#region").change(function () {
+            // get the url of the `load_cities` view
+            const regionId = $(this).val();
+            // get the selected country ID from the HTML input
+            // console.log(regionId)
+            $.ajax({                       // initialize an AJAX request
+                url: {% url 'lead:region' %},                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'region_id': regionId       // add the country id to the GET parameters
+                },
+                success: function (data) {
+                    let html_data = '<option value="">Tumanni tanlang</option>';
+                    data.forEach(function (district) {
+                        html_data += `<option value="${district.id}">${district.title}</option>`
+                    });
+                    // console.log(html_data);
+                    $("#district").html(html_data);
+                }
+            });
+
+        });
+    </script>
+{% endblock content %}

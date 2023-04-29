@@ -1,0 +1,820 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {#    <link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css"/>#}
+
+    <!-- Plugins css -->
+    <link href="{% static 'libs/mohithg-switchery/switchery.min.css" rel="stylesheet' %}" type="text/css"/>
+    <link href="{% static 'libs/multiselect/css/multi-select.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'libs/selectize/css/selectize.bootstrap3.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+
+    <!-- Bootstrap css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- App css -->
+    <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" id="app-style"/>
+    <!-- icons -->
+    <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- Head js -->
+    <script src="{% static 'js/head.js' %}"></script>
+    <div class="content mt-3">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="modal-body p-4">
+                                {% for p in patient %}
+                                    {{ p }}
+                                    {% for card_id in p.patient.card_to_user_patient.all %}
+                                        <h2>ID: {{ card_id.card_id }}</h2>
+                                    {% endfor %}
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td>Bemor:</td>
+                                            <td>{{ p.patient.last_name }} {{ p.patient.first_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tug'ilgan yili:</td>
+                                            <td>{{ p.patient.birthday }}</td>
+                                        </tr>
+                                    </table>
+                                {% endfor %}
+                                <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                        <h2>Visus</h2>
+                                        <table class="table table-bordered">
+                                            <th></th>
+                                            <th>OD</th>
+                                            <th>OS</th>
+                                            <tr>
+                                                <td>Б/К</td>
+                                                {% for od in visus %}
+                                                    {% if od.eye == 0 %}
+                                                        <td>{{ od.bk }}</td>
+                                                    {% else %}
+                                                        <td>{{ od.bk }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>С/Д</td>
+                                                {% for os in visus %}
+                                                    {% if os.eye == 0 %}
+                                                        <td>{{ os.cd }}</td>
+                                                    {% else %}
+                                                        <td>{{ os.cd }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>SPH</td>
+                                                {% for os in visus %}
+                                                    {% if os.eye == 0 %}
+                                                        <td>{{ os.sph }}</td>
+                                                    {% else %}
+                                                        <td>{{ os.sph }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>CYL</td>
+                                                {% for os in visus %}
+                                                    {% if os.eye == 0 %}
+                                                        <td>{{ os.cyl }}</td>
+                                                    {% else %}
+                                                        <td>{{ os.cyl }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>AX</td>
+                                                {% for os in visus %}
+                                                    {% if os.eye == 0 %}
+                                                        <td>{{ os.ax }}°</td>
+                                                    {% else %}
+                                                        <td>{{ os.ax }}°</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Близ</td>
+                                                {% for os in visus %}
+                                                    {% if os.eye == 0 %}
+                                                        <td>{{ os.bliz }}</td>
+                                                    {% else %}
+                                                        <td>{{ os.bliz }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>С/К</td>
+                                                {% for os in visus %}
+                                                    {% if os.eye == 0 %}
+                                                        <td>{{ os.ck }}</td>
+                                                    {% else %}
+                                                        <td>{{ os.ck }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="post-form" method="post">
+                                {% csrf_token %}
+                                {{ form.errors }}
+                                {#                                                                        {{ form.as_p }}#}
+                                {#                                                                        <input type="submit">#}
+                                <!-- Block Jalobi  -->
+                                <div class="mb-3 custom_field">
+                                    <div class="row">
+                                        <div class="col"><h3>Жалобы</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-11">
+                                            <div class="col-lg">
+                                                <div class="mb-3">
+                                                    <select name="complaints" id="selectize-optgroup" multiple
+                                                            data-placeholder="Select gear...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for complaint in complains %}
+                                                            <option value="{{ complaint.id }}">{{ complaint }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1">
+                                            <a href="{% url 'diagnostic:complaints' %}"> <i class="fe-plus"
+                                                                                            style="font-size: 35px"></i></a>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.complaints.errors }}</span>
+                                </div>
+                                <!-- END Block Jalobi  -->
+                                <!-- Block Анамнез  -->
+                                <div class="mb-3 custom_field">
+                                    <div class="row">
+                                        <div class="col"><h3>Анамнез</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" class="form-control" id="anamnesis"
+                                                   name="anamnesis"
+                                                   placeholder="Анамнез">
+                                            <span>{{ form.anamnesis.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END Block Анамнез  -->
+                                <!-- Block Аллергия  -->
+                                <div class="mb-3 custom_field">
+                                    <div class="row">
+                                        <div class="col"><h3>Аллергия</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <span>{{ form.allergy.errors }}</span>
+                                            <input type="checkbox" id="html" name="allergy" value="True">
+                                            <label for="html">Bor</label><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END Block Аллергия  -->
+
+                                <!-- BLOCK Веки-->
+                                <div class="mb-3 custom_field">
+                                    <div class="row">
+                                        <div class="col"><h3>Веки</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <div class="col-lg">
+                                                        <div class="mb-3">
+                                                            <label for="eyelids"
+                                                                   class="form-label">OD</label>
+                                                            <select name="eyelids" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                                <option value="">Select gear...</option>
+                                                                {% for eyelids in form.eyelids %}
+                                                                    {{ eyelids }}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <span>{{ form.eyelids.errors }}</span>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:eyelids' %}"> <i class="fe-plus"
+                                                                                                 style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="" class="form-label">OS</label>
+                                                            <select name="eyelids_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for eyelids in form.eyelids %}
+                                                            {{ eyelids }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:eyelids' %}"> <i class="fe-plus"
+                                                                                                 style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.eyelids.errors }}</span>
+                                </div>
+                                <!-- END BLOCK Веки-->
+
+                                <!--BLOCK Глазное яблоко-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Глазное яблоко</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="eyeball_od" class="form-label">OD</label>
+                                                            <select name="eyeball" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for eyeball in form.eyeball %}
+                                                            {{ eyeball }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:eyeballs' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="eyeball_os" class="form-label">OS</label>
+                                                            <select name="eyeball_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for eyeball in form.eyeball %}
+                                                            {{ eyeball }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:eyeballs' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.eyeball.errors }}</span>
+                                </div>
+                                <!--END BLOCK Глазное яблоко-->
+
+                                <!--BLOCK Конъюнктива-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Конъюнктива</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="conjunctiva_od"
+                                                           class="form-label">OD</label>
+                                                            <select name="conjunctiva" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for conjunctiva in form.conjunctiva %}
+                                                            {{ conjunctiva }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:conjunctivas' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="conjunctiva_os"
+                                                           class="form-label">OS</label>
+                                                            <select name="conjunctiva_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for conjunctiva in form.conjunctiva %}
+                                                            {{ conjunctiva }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:conjunctivas' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.conjunctiva.errors }}</span>
+                                </div>
+                                <!--END BLOCK Конъюнктива-->
+
+                                <!--BLOCK Роговица-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Роговица</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="cornea_od" class="form-label">OD</label>
+                                                            <select name="cornea" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for cornea in form.cornea %}
+                                                            {{ cornea }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:corneas' %}"> <i class="fe-plus"
+                                                                                                 style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="cornea_os" class="form-label">OS</label>
+                                                            <select name="cornea_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for cornea in form.cornea %}
+                                                            {{ cornea }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:corneas' %}"> <i class="fe-plus"
+                                                                                                 style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.cornea.errors }}</span>
+                                </div>
+                                <!--END BLOCK Роговица-->
+
+                                <!--BLOCK Передняя Камера-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Передняя Камера</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="front_camera_od"
+                                                           class="form-label">OD</label>
+                                                            <select name="front_camera" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for front_camera in form.front_camera %}
+                                                            {{ front_camera }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:front-cameras' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="front_camera_os"
+                                                           class="form-label">OS</label>
+                                                            <select name="front_camera_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for front_camera in form.front_camera %}
+                                                            {{ front_camera }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:front-cameras' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.front_camera.errors }}</span>
+                                </div>
+                                <!--END BLOCK Передняя Камера-->
+
+                                <!--BLOCK Радужкаб Зрачок-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Радужка, Зрачок</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="zrachok_od" class="form-label">OD</label>
+                                                            <select name="zrachok" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for zrachok in form.zrachok %}
+                                                            {{ zrachok }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:pupil-of-the-eye' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="zrachok_os" class="form-label">OS</label>
+                                                             <select name="zrachok_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for zrachok in form.zrachok %}
+                                                            {{ zrachok }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:pupil-of-the-eye' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.zrachok.errors }}</span>
+                                </div>
+                                <!--END BLOCK Радужкаб Зрачок-->
+
+                                <!--BLOCK Хрусталик-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Хрусталик</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="lens_od" class="form-label">OD</label>
+                                                             <select name="lens" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for lens in form.lens %}
+                                                            {{ lens }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:lens' %}"> <i class="fe-plus"
+                                                                                              style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="lens_os" class="form-label">OS</label>
+                                                            <select name="lens_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for lens in form.lens %}
+                                                            {{ lens }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:lens' %}"> <i class="fe-plus"
+                                                                                              style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.lens.errors }}</span>
+                                </div>
+                                <!--END BLOCK Хрусталик-->
+
+                                <!--BLOCK Стекловидное тело-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Стекловидное тело</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="vitreous_body_od"
+                                                           class="form-label">OD</label>
+                                                            <select name="vitreous_body" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for vitreous_body in form.vitreous_body %}
+                                                            {{ vitreous_body }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:vitreous-body' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="vitreous_body_os"
+                                                           class="form-label">OS</label>
+                                                            <select name="vitreous_body_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for vitreous_body in form.vitreous_body %}
+                                                            {{ vitreous_body }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:vitreous-body' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.vitreous_body.errors }}</span>
+                                </div>
+                                <!--END BLOCK Стекловидное тело-->
+
+                                <!--BLOCK Глазное дно-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Глазное дно</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="ocular_fundus_od"
+                                                           class="form-label">OD</label>
+                                                            <select name="ocular_fundus" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for ocular_fundus in form.ocular_fundus %}
+                                                            {{ ocular_fundus }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:ocular-fundus' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                            </div>
+                                            <label for="ocular_od" class="form-label">
+                                                <h4>OD (
+                                                    <output id="ocular_odOutput">0</output>
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="hour_indicator_od" class="form-range"
+                                                   id="ocular_od"
+                                                   value="0"
+                                                   min="0" max="12" step="1"
+                                                   oninput="ocular_odOutput.value=ocular_od.value">
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <label for="ocular_fundus_os"
+                                                           class="form-label">OS</label>
+                                                            <select name="ocular_fundus_os" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                        <option value="">Select gear...</option>
+                                                        {% for ocular_fundus in form.ocular_fundus %}
+                                                            {{ ocular_fundus }}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                                    <a href="{% url 'diagnostic:ocular-fundus' %}"> <i
+                                                            class="fe-plus"
+                                                            style="font-size: 35px"></i></a>
+                                                </div>
+                                                <label for="ocular_os" class="form-label">
+                                                    <h4>OS (
+                                                        <output id="ocular_osOutput">0</output>
+                                                        )
+                                                    </h4>
+                                                </label>
+                                                <input type="range" name="hour_indicator_os"
+                                                       class="form-range"
+                                                       id="ocular_os"
+                                                       value="0"
+                                                       min="0" max="12" step="1"
+                                                       oninput="ocular_osOutput.value=ocular_os.value">
+                                            </div>
+                                            <span>{{ form.ocular_fundus.errors }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END BLOCK Глазное дно-->
+
+                                <!--BLOCK Диагноз-->
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Диагноз</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-11">
+                                            <label for="diagnosis" class="form-label"></label>
+                                                            <select name="diagnosis" class="form-control select2-multiple"
+                                                                    data-toggle="select2" data-width="100%"
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Choose ...">
+                                                <option value="">Select gear...</option>
+                                                {% for diagnosis in form.diagnosis %}
+                                                    {{ diagnosis }}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-1" style="margin: auto; margin-top: 32px;">
+                                            <a href="{% url 'diagnostic:diagnosis' %}"> <i class="fe-plus"
+                                                                                           style="font-size: 35px"></i></a>
+                                        </div>
+                                    </div>
+                                    <span>{{ form.diagnosis.errors }}</span>
+                                </div>
+                                <!--END BLOCK Диагноз-->
+
+                                <!-- Block Рекомендовано  -->
+                                <div class="mb-3 custom_field">
+                                    <div class="row">
+                                        <div class="col"><h3>Рекомендовано</h3></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <span>{{ form.is_operation.errors }}</span>
+                                            <input type="checkbox" id="is_operation" name="is_operation"
+                                                   value="is_operation">
+                                            <label for="is_operation">Операция</label><br>
+                                        </div>
+                                        <div class="col">
+                                            <span>{{ form.is_operation.errors }}</span>
+                                            <input type="checkbox" id="darmon"
+                                                   value="darmon">
+                                            <label for="darmon">Dori darmon</label><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END Block Рекомендовано  -->
+
+                                <div class="text-end">
+                                    <input type="submit" class="btn btn-success waves-effect waves-light"
+                                           placeholder="Save" value="Saqlash">
+                                    <a href="{% url 'user:employee-list' %}">
+                                        <button type="button"
+                                                class="btn btn-danger waves-effect waves-light"
+                                                data-bs-dismiss="modal">Bekor qolish
+                                        </button>
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Vendor js -->
+    <script src="{% static 'js/vendor.min.js' %}"></script>
+
+    <script src="{% static 'libs/selectize/js/standalone/selectize.min.js' %}"></script>
+    <script src="{% static 'libs/mohithg-switchery/switchery.min.js' %}"></script>
+    <script src="{% static 'libs/multiselect/js/jquery.multi-select.js' %}"></script>
+    <script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'libs/jquery-mockjax/jquery.mockjax.min.js' %}"></script>
+    <script src="{% static 'libs/devbridge-autocomplete/jquery.autocomplete.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+
+    <!-- Init js-->
+    <script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+    {#    <script src="{% static 'libs/selectize/js/standalone/selectize.min.js' %}"></script>#}
+    {#    <script src="{% static 'libs/multiselect/js/jquery.multi-select.js' %}"></script>#}
+    {#    <script>#}
+    {#       // $('#multiple-select-field').select2({#}
+    {#            theme: "bootstrap-5",#}
+    {#            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',#}
+    {#            placeholder: $(this).data('placeholder'),#}
+    {#            closeOnSelect: false,#}
+    {#        });#}
+    {#    </script>#}
+
+{% endblock %}

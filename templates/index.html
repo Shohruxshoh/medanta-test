@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>UBold - Responsive Admin Dashboard & Landing Page Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description"/>
+    <meta content="Coderthemes" name="author"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+
+    <!--Material Icon -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/materialdesignicons.min.css' %}"/>
+
+    <!-- Custom  sCss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="78">
+
+<!--Navbar Start-->
+<nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky-dark" id="sticky">
+    <div class="container-fluid">
+        <!-- LOGO -->
+        <a class="logo text-uppercase" href="index.html">
+            <img src="{% static 'images/logo-light.png' %}" alt="" class="logo-light" height="21"/>
+            <img src="{% static 'images/logo-dark.png' %}" alt="" class="logo-dark" height="21"/>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="mdi mdi-menu"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            {% if user.is_authenticated %}
+                <a href="{% url 'user:logout' %}" style="margin-left: auto!important;"
+                   class="btn btn-info navbar-btn">Chiqish</a>
+            {% else %}
+                <a href="{% url 'user:login_view' %}" style="margin-left: auto!important;"
+                   class="btn btn-info navbar-btn">Kirish</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<!-- home start -->
+<section class="bg-home bg-gradient" id="home">
+    <div class="home-center">
+        <div class="home-desc-center">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="home-title mo-mb-20">
+                            <h1 class="mb-4 text-white">Ubold is a fully featured premium admin template</h1>
+                            <p class="text-white-50 home-desc mb-5">Ubold is a fully featured premium admin template
+                                built on top of awesome Bootstrap 5, modern web technology HTML5, CSS3 and jQuery. It
+                                has many ready to use hand crafted components. </p>
+                            <div class="subscribe">
+                                <a href="{% url 'lead:create' %}" class="btn btn-primary">Bemorni ro'yxatga olish</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-7">
+                        <div class="home-img position-relative">
+                            <img src="{% static 'images/home-img.png' %}" alt="" class="home-first-img">
+                            <img src="{% static 'images/home-img.png' %}" alt=""
+                                 class="home-second-img mx-auto d-block">
+                            <img src="{% static 'images/home-img.png' %}i" alt="" class="home-third-img">
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container-fluid -->
+        </div>
+    </div>
+</section>
+<!-- home end -->
+<!-- footer start -->
+<footer class="bg-dark footer">
+    <div class="container-fluid">
+        <div class="row mb-5">
+            <div class="col-lg-4">
+                <div class="pe-lg-4">
+                    <div class="mb-4">
+                        <img src="{% static 'images/logo-light.png' %}" alt="" height="20">
+                    </div>
+                    <p class="text-white-50">A Responsive Bootstrap 5 Web App Kit</p>
+                    <p class="text-white-50 mb-4 mb-lg-0">Ubold is a fully featured premium admin template built on top
+                        of awesome Bootstrap 5, modern web technology HTML5, CSS3 and jQuery.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-list">
+                    <p class="text-white mb-2 footer-list-title">About</p>
+                    <ul class="list-unstyled">
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Home</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Features</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Faq</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Clients</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-list">
+                    <p class="text-white mb-2 footer-list-title">Social</p>
+                    <ul class="list-unstyled">
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Facebook </a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Twitter</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Behance</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Dribble</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-list">
+                    <p class="text-white mb-2 footer-list-title">Support</p>
+                    <ul class="list-unstyled">
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Help & Support</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Privacy Policy</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-list">
+                    <p class="text-white mb-2 footer-list-title">More Info</p>
+                    <ul class="list-unstyled">
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Pricing</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>For Marketing</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>For Agencies</a></li>
+                        <li><a href="#"><i class="mdi mdi-chevron-right me-2"></i>Our Apps</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="float-start pull-none">
+                    <p class="text-white-50">
+                        <script>document.write(new Date().getFullYear())</script> &copy;Ubold. Design by <a
+                            href="https://coderthemes.com/" target="_blank" class="text-white-50">Coderthemes</a></p>
+                    <!-- <p class="text-white-50">2015 - 2020 © Ubold. Design by <a href="https://coderthemes.com/" target="_blank" class="text-white-50">Coderthemes</a> </p> -->
+                </div>
+                <div class="float-end pull-none">
+                    <ul class="list-inline social-links">
+                        <li class="list-inline-item text-white-50">
+                            Social :
+                        </li>
+                        <li class="list-inline-item"><a href="#"><i class="mdi mdi-facebook"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="mdi mdi-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="mdi mdi-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="mdi mdi-google-plus"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- container-fluid -->
+</footer>
+<!-- footer end -->
+
+<!-- Back to top -->
+<!-- <a href="#" class="back-to-top" id="back-to-top"> <i class="mdi mdi-chevron-up"> </i> </a> -->
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" class="back-to-top-btn btn btn-primary" id="back-to-top-btn"><i
+        class="mdi mdi-chevron-up"></i></a>
+
+<!-- javascript -->
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- custom js -->
+<script src="{% static 'js/app.js' %}"></script>
+</body>
+
+</html>

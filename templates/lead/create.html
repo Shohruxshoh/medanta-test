@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {#                            {{ form.as_p }}#}
+                            {#                            <input type="submit">#}
+
+                            {#                            <div class="mb-3">#}
+                            {#                                <label for="last_name" class="form-label">Klinika</label>#}
+                            {#                                <select name="clinic" id="clinic" class="form-control form-control-lg" readonly>#}
+                            {#                                    <option value="{{ user.clinic.id }}">{{ user.clinic }}</option>#}
+                            {#                                </select>#}
+                            {#                                <span>{{ form.clinic.errors }}</span>#}
+                            {#                            </div>#}
+                            <h3>Asosiy ma'lumotlar</h3>
+                            <div class="mb-3">
+                                <label for="phone1" class="form-label">Telefon</label>
+                                <input type="text" class="form-control {% if form.phone.errors %} is-invalid{% endif %}"
+                                       name="phone" id="phone1" placeholder="Telefon" required>
+                                <span>Namuna:91 600 77 67</span><br>
+                                <span>{{ form.phone.errors }}</span>
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <span>Telefon raqam mavjud yoki xato raqam kiritdingiz</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Familiya</label>
+                                <input type="text" class="form-control" name="last_name" id="last_name"
+                                       placeholder="Familiya">
+                                <span>{{ form.last_name.errors }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">Ism</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name"
+                                       placeholder="Ism">
+                                <span>{{ form.first_name.errors }}</span>
+
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       id="save" placeholder="Save" value="Saqlash">
+                            </div>
+                            <h3>Qo'shimcha malumotlar</h3>
+                            <div class="mb-3">
+                                <label for="middle_name" class="form-label">Sharifi</label>
+                                <input type="text" class="form-control" name="middle_name" id="middle_name"
+                                       placeholder="Sharifi" value="">
+                                <span>{{ form.first_name.errors }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="region" class="form-label">Viloyat</label>
+                                <select name="region" id="region" class="form-control form-control-lg">
+                                    {% for region in form.region %}
+                                        {{ region }}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="district" class="form-label">Tuman</label>
+                                <select name="district" id="district" class="form-control form-control-lg">
+                                    {% for district in form.district %}
+                                        {{ district }}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" name="address" id="address"
+                                       placeholder="address">
+                                <span>{{ form.address.errors }}</span>
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="birthday" class="form-label">Tug'ilgan kuni</label>
+                                <input type="date" class="form-control" id="birthday" name="birthday"
+                                       placeholder="Tug'ilgan kuni">
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       id="save" placeholder="Save" value="Saqlash">
+                                <a href="{% url 'lead:customers' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block js %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var value = $(this).inputmask('unmaskedvalue');
+
+                $('#phone1').inputmask({
+                    mask: (value.substr(0, 2) === '37' || value.substr(0, 2) === '34') ? '99 999 99 99' : '99 999 99 99'
+                });
+            });
+        </script>
+        <script>
+            $("#region").change(function () {
+                // get the url of the `load_cities` view
+                const regionId = $(this).val();
+                // get the selected country ID from the HTML input
+                // console.log(regionId)
+                $.ajax({                       // initialize an AJAX request
+                    url: {% url 'lead:region' %},                    // set the url of the request (= /persons/ajax/load-cities/ )
+                    data: {
+                        'region_id': regionId       // add the country id to the GET parameters
+                    },
+                    success: function (data) {
+                        let html_data = '<option value="">Tumanni tanlang</option>';
+                        data.forEach(function (district) {
+                            html_data += `<option value="${district.id}">${district.title}</option>`
+                        });
+                        // console.log(html_data);
+                        $("#district").html(html_data);
+                    }
+                });
+
+            });
+        </script>
+    {% endblock js %}
+
+
+
+    {#    <script>#}
+    {#        $(document).ready(function () {#}
+    {#            $('#phone1').inputmask('+\\9\\98 (99) 999-99-99')#}
+    {#        })#}
+    {#    </script>#}
+{% endblock content %}

@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
+                                <li class="breadcrumb-item active">Customers</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Operatsiya qilgan bemorlar Ro'yxati</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-sm-4">
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="text-sm-end mt-2 mt-sm-0">
+                                        <button type="button" class="btn btn-success mb-2 me-1"><i
+                                                class="mdi mdi-cog"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light mb-2 me-1">Import</button>
+                                        <button type="button" class="btn btn-light mb-2">Export</button>
+                                    </div>
+                                </div><!-- end col-->
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap table-striped" id="products-datatable">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20px;">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                            </div>
+                                        </th>
+                                        <th>Telefon</th>
+                                        <th>ID</th>
+                                        <th>Familiya/Ism/Sharifi</th>
+                                        <th>Viloyat/Tuman/Address</th>
+                                        <th>Tug'ilga sana</th>
+                                        <th style="width: 85px;">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for custom in patientcomehistory_list %}
+                                        {% for ophth in custom.ophth_to_patient_come_history.all %}
+                                            {% if ophth.eye == 0 %}
+                                                {% if ophth.is_operation %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input"
+                                                                       id="customCheck2">
+                                                                <label class="form-check-label"
+                                                                       for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="table-user">
+                                                            <a href="{% url 'diagnostic:detail-optic' custom.pk %}"
+                                                               class="text-body fw-semibold">
+                                                                {% if ophth.eye == 0 %}
+                                                                    {{ custom.patient }}
+                                                                {% endif %}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            {% for c_id in custom.patient.card_to_user_patient.all %}
+                                                                {{ c_id }}<br>
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td>
+                                                            {% if custom.patient.last_name %}
+                                                                {{ custom.patient.last_name }}
+                                                            {% else %}
+                                                                --
+                                                            {% endif %}
+                                                            {% if custom.patient.first_name %}
+                                                                {{ custom.patient.first_name }}
+                                                            {% else %}
+                                                                --
+                                                            {% endif %}
+                                                            {% if custom.patient.middle_name %}
+                                                                {{ custom.patient.middle_name }}
+                                                            {% else %}
+                                                                --
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {% if custom.patient.region %}
+                                                                {{ custom.patient.region }}
+                                                            {% else %}
+                                                                --
+                                                            {% endif %}
+                                                            {% if custom.patient.district %}
+                                                                {{ custom.patient.district }}
+                                                            {% else %}
+                                                                --
+                                                            {% endif %}
+                                                            {% if custom.patient.address %}
+                                                                {{ custom.patient.address }}
+                                                            {% else %}
+                                                                --
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {% if custom.patient.birthday %}
+                                                                {{ custom.patient.birthday }}
+                                                            {% else %}
+                                                                --
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            <a href="#"
+                                                               class="action-icon"> <i
+                                                                    class="mdi mdi-square-edit-outline"></i></a>
+                                                            {% csrf_token %}
+                                                            <a class="action-icon" id="link-delete"
+                                                               href="#"> <i
+                                                                    class="mdi mdi-delete"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ul class="pagination pagination-rounded justify-content-end mb-0">
+                                {% if is_paginated %}
+                                    <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                        <li>
+                                            <span><a
+                                                    href="{% url 'user:employee-list' %}?page={{ page_obj.previous_page_number }}">Previous</a></span>
+                                        </li>
+                                    {% endif %}
+                                    <li class="">
+                                        <span>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                                    </li>
+                                    {% if page_obj.has_next %}
+                                        <li>
+                                            <span><a
+                                                    href="{% url 'user:employee-list' %}?page={{ page_obj.next_page_number }}">Next</a></span>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                                </ul>
+
+                            </ul>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+{% endblock %}

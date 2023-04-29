@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    {% for card_id in patientcomehistory.patient.card_to_user_patient.all %}
+                                        <h2>ID: {{ card_id.card_id }}</h2>
+                                    {% endfor %}
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td>Bemor:</td>
+                                            <td>{{ patientcomehistory.patient.last_name }} {{ patientcomehistory.patient.first_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tug'ilgan yili:</td>
+                                            <td>{{ patientcomehistory.patient.birthday }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h2>Visus</h2>
+                                    <table class="table table-bordered">
+                                        <th></th>
+                                        <th>OD</th>
+                                        <th>OS</th>
+                                        <tr>
+                                            <td>Б/К</td>
+                                            {% for od in patientcomehistory.visus_to_patient_come_history.all %}
+                                                {% if od.eye == 0 %}
+                                                    <td>{{ od.bk }}</td>
+                                                {% else %}
+                                                    <td>{{ od.bk }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>С/Д</td>
+                                            {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                                {% if os.eye == 0 %}
+                                                    <td>{{ os.cd }}</td>
+                                                {% else %}
+                                                    <td>{{ os.cd }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>SPH</td>
+                                            {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                                {% if os.eye == 0 %}
+                                                    <td>{{ os.sph }}</td>
+                                                {% else %}
+                                                    <td>{{ os.sph }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>CYL</td>
+                                            {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                                {% if os.eye == 0 %}
+                                                    <td>{{ os.cyl }}</td>
+                                                {% else %}
+                                                    <td>{{ os.cyl }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>AX</td>
+                                            {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                                {% if os.eye == 0 %}
+                                                    <td>{{ os.ax }}°</td>
+                                                {% else %}
+                                                    <td>{{ os.ax }}°</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Близ</td>
+                                            {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                                {% if os.eye == 0 %}
+                                                    <td>{{ os.bliz }}</td>
+                                                {% else %}
+                                                    <td>{{ os.bliz }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>С/К</td>
+                                            {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                                {% if os.eye == 0 %}
+                                                    <td>{{ os.ck }}</td>
+                                                {% else %}
+                                                    <td>{{ os.ck }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    {{ form.errors }}
+                                    {% if patientcomehistory.is_active %}
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <td>Жалобы</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for comp in patient.complaints.all %}
+                                                                {{ comp }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Анамнез</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>{{ patient.anamnesis }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Аллергия</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        {% if patient.allergy %}
+                                                            <td>Alergiya bor</td>
+                                                        {% else %}
+                                                            <td>Alergiya yo'q</td>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        </table>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    {% if patientcomehistory.is_active %}
+                                        <table class="table table-bordered">
+                                            <th></th>
+                                            <th>OD</th>
+                                            <th>OS</th>
+                                            <tr>
+                                                <td>Веки</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for eyelid in patient.eyelids.all %}
+                                                                {{ eyelid }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for eyelid in patient.eyelids.all %}
+                                                                {{ eyelid }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Глазное яблоко</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for eyeball in patient.eyeball.all %}
+                                                                {{ eyeball }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for eyeball in patient.eyeball.all %}
+                                                                {{ eyeball }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Конъюнктива</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for conjunctiva in patient.conjunctiva.all %}
+                                                                {{ conjunctiva }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for conjunctiva in patient.conjunctiva.all %}
+                                                                {{ conjunctiva }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Роговица</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for cornea in patient.cornea.all %}
+                                                                {{ cornea }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for cornea in patient.cornea.all %}
+                                                                {{ cornea }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Передняя Камера</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for front_camera in patient.front_camera.all %}
+                                                                {{ front_camera }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for front_camera in patient.front_camera.all %}
+                                                                {{ front_camera }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Радужка, Зрачок</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for zrachok in patient.zrachok.all %}
+                                                                {{ zrachok }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for zrachok in patient.zrachok.all %}
+                                                                {{ zrachok }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Хрусталик</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for lens in patient.lens.all %}
+                                                                {{ lens }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for lens in patient.lens.all %}
+                                                                {{ lens }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Стекловидное тело</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for vitreous_body in patient.vitreous_body.all %}
+                                                                {{ vitreous_body }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for vitreous_body in patient.vitreous_body.all %}
+                                                                {{ vitreous_body }} <br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            <tr>
+                                                <td>Глазное дно</td>
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        <td>
+                                                            {% for ocular_fundus in patient.ocular_fundus.all %}
+                                                                {{ ocular_fundus }} <br>
+                                                            {% endfor %}
+                                                            <span>Soat: <span
+                                                                    style="font-weight: bold">{{ patient.hour_indicator }}</span></span>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            {% for ocular_fundus in patient.ocular_fundus.all %}
+                                                                {{ ocular_fundus }} <br>
+                                                            {% endfor %}
+                                                            <span>Soat: <span
+                                                                    style="font-weight: bold">{{ patient.hour_indicator }}</span></span>
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        </table>
+                                        <div>
+                                            <h3>Диагноз:
+                                                {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
+                                                    {% if patient.eye == 0 %}
+                                                        {% for diagnosis in patient.diagnosis.all %}
+                                                            <span style="font-size: 17px; font-weight: normal; margin: auto">{{ diagnosis }}</span>
+                                                        {% endfor %}
+                                                        </h3>
+                                                        <h3>РЕКОМЕНДОВАНО:
+                                                            {% if patient.is_operation %}
+                                                                <span style="font-size: 25px; margin-left: 20px; font-weight: normal">Operatsiya qilinadi</span>
+                                                            {% else %}
+                                                                <span style="font-size: 25px; margin-left: 20px; font-weight: normal">Dori darmon qilinadi</span>
+                                                            {% endif %} </h3>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            <h3>ВРАЧ: <span
+                                                    style="font-size: 25px; margin-left: 20px">{{ request.user.first_name }} {{ request.user.last_name }} {{ request.user.phone }}</span>
+                                            </h3>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

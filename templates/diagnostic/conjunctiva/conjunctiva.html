@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
+                                <li class="breadcrumb-item active">Customers</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Qovoq Ro'yxati</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                 <div class="col-sm-4">
+                                    <a href="{% url 'diagnostic:conjunctiva-create' %}">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light"
+                                                data-bs-toggle="modal"><i
+                                                class="mdi mdi-plus-circle me-1"></i> Qovoq qo'shish
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="text-sm-end mt-2 mt-sm-0">
+                                        <button type="button" class="btn btn-success mb-2 me-1"><i
+                                                class="mdi mdi-cog"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light mb-2 me-1">Import</button>
+                                        <button type="button" class="btn btn-light mb-2">Export</button>
+                                    </div>
+                                </div><!-- end col-->
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap table-striped"
+                                       id="products-datatable">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20px;">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                            </div>
+                                        </th>
+                                        <th>Nomi</th>
+                                        <th>Klinika</th>
+                                        <th style="width: 85px;">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for conjunctiva in conjunctiva_list %}
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           id="customCheck2">
+                                                    <label class="form-check-label"
+                                                           for="customCheck2">&nbsp;</label>
+                                                </div>
+                                            </td>
+                                            <td class="table-user">
+                                                <a href="#"
+                                                   class="text-body fw-semibold">{{ conjunctiva.title }}</a>
+                                            </td>
+                                            <td>
+                                                {{ conjunctiva.clinic }}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'diagnostic:conjunctiva-update' conjunctiva.pk %}"
+                                                   class="action-icon"> <i
+                                                        class="mdi mdi-square-edit-outline"></i></a>
+                                                {% csrf_token %}
+                                                <a class="action-icon" id="link-delete"
+                                                   href="{% url 'diagnostic:conjunctiva-delete' conjunctiva.pk %}"> <i
+                                                        class="mdi mdi-delete"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ul class="pagination pagination-rounded justify-content-end mb-0">
+                                {% if is_paginated %}
+                                    <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                        <li>
+                                            <span><a
+                                                    href="{% url 'diagnostic:conjunctivas' %}?page={{ page_obj.previous_page_number }}">Previous</a></span>
+                                        </li>
+                                    {% endif %}
+                                    <li class="">
+                                        <span>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                                    </li>
+                                    {% if page_obj.has_next %}
+                                        <li>
+                                            <span><a
+                                                    href="{% url 'diagnostic:conjunctivas' %}?page={{ page_obj.next_page_number }}">Next</a></span>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                                </ul>
+
+                            </ul>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h4 class="modal-title">Add New Customers</h4>
+                    <button type="button" class="btn-close" aria-hidden="true"></button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock content %}

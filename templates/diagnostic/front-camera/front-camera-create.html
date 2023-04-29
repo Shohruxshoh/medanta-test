@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content mt-3">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {#                                    {{ form.as_p }}#}
+                            {#                                    <input type="submit">#}
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Nomi</label>
+                                <input type="text" class="form-control" name="title" id="title"
+                                       placeholder="Nomi">
+                                <span>{{ form.title.errors }}</span>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Saqlash">
+                                <a href="{% url 'diagnostic:front-cameras' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

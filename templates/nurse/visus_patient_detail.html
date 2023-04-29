@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2>Visus</h2>
+                            <table class="table table-bordered">
+                                <th></th>
+                                <th>Б/К</th>
+                                <th>С/Д</th>
+                                <th>SPH</th>
+                                <th>CYL</th>
+                                <th>AX</th>
+                                <th>Близ</th>
+                                <th>С/К</th>
+                                <tr>
+                                    <td>OD</td>
+                                    {% for od in patientcomehistory.visus_to_patient_come_history.all %}
+                                        {% if od.eye == 0 %}
+                                            <td>{{ od.bk }}</td>
+                                            <td>{{ od.cd }}</td>
+                                            <td>{{ od.sph }}</td>
+                                            <td>{{ od.cyl }}</td>
+                                            <td>{{ od.ax }}°</td>
+                                            <td>{{ od.bliz }}</td>
+                                            <td>{{ od.ck }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td>OS</td>
+                                    {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                        {% if os.eye == 1 %}
+                                            <td>{{ os.bk }}</td>
+                                            <td>{{ os.cd }}</td>
+                                            <td>{{ os.sph }}</td>
+                                            <td>{{ os.cyl }}</td>
+                                            <td>{{ os.ax }}°</td>
+                                            <td>{{ os.bliz }}</td>
+                                            <td>{{ os.ck }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

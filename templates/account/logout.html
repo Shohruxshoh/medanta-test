@@ -1,0 +1,13 @@
+{% load i18n %}
+{% block head_title %}{% trans "Tizimdan chiqish" %}{% endblock %}
+{% block content %}
+<h1 class="h1">{% trans "Tizimdan chiqish" %}</h1>
+<p>{% trans 'Tizimdan chiqishni hohlaysizmi?' %}</p>
+<form class="form-group" method="get">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  <input class="form-control" type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  <button class="btn-danger btn" type="submit">{% trans 'Tizimdan chiqish' %}</button>
+</form>
+{% endblock %}

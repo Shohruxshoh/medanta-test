@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {#                                    {{ form.as_p }}#}
+                            {#                                    <input type="submit">#}
+                            <div class="mb-3">
+                                <label for="partner" class="form-label">Hamkor</label>
+                                <select name="partner" id="partner" class="form-control form-control-lg">
+{#                                    {% for partner in partners %}#}
+{#                                        <option value="{{ partner.id }}">{{ partner }}</option>#}
+{#                                    {% endfor %}#}
+                                    <option value="{{ request.user.id }}">{{ request.user }}</option>
+                                </select>
+                                {{ form.partner.errors }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="credit_card" class="form-label">Karta raqami</label>
+                                <input type="text" class="form-control" name="credit_card" id="credit_card"
+                                       placeholder="Karta raqami">
+                                <span>{{ form.credit_card.errors }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="month_year" class="form-label">Oy/Yil</label>
+                                <input type="text" class="form-control" name="expire_date" id="month_year"
+                                       placeholder="oy/yil">
+                                <span>{{ form.month_year.errors }}</span>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Saqlash">
+                                <a href="{% url 'deposit:partnet-detail' user.id %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block js %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var value = $(this).inputmask('unmaskedvalue');
+
+                $('#credit_card').inputmask({
+                    mask: (value.substr(0, 2) === '37' || value.substr(0, 2) === '34') ? '9999 9999 9999 9999' : '9999 9999 9999 9999'
+                });
+
+                $('#month_year').inputmask({
+                    mask: (value.substr(0, 2) === '37' || value.substr(0, 2) === '34') ? '99/99' : '99/99'
+                });
+            });
+        </script>
+    {% endblock js %}
+{% endblock content %}

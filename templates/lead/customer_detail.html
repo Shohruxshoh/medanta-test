@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load installment_tags %}
+{% load card_startswith_tags %}
+{% load humanize %}
+{% load static %}
+{% block content %}
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
+                                <li class="breadcrumb-item active">Contacts</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">{{ object.first_name }} {{ object.last_name }} {{ object.middle_name }}</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {% include '_parts/messages.html' %}
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="w-100">
+                                    <h4 class="mt-0 mb-1">Telefon: {{ object.phone }}</h4>
+                                    <p class="text-muted">{{ object.get_role_display }}</p>
+                                    {% if object.card_to_user_patient.all %}
+                                        {% for patientcomehistory in object.card_to_user_patient.all %}
+                                            <h4>Card raqami: <b>{{ patientcomehistory.card_id }}</b></h4>
+                                        {% endfor %}
+                                    {% else %}
+                                        <br>
+                                    {% endif %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="mb-1">
+                                            <input type="text" hidden name="patient" value="{{ user.id }}">
+                                            <input type="text" class="form-control" id="card_id" name="card_id"
+                                                   placeholder="Bemor card ID:">
+                                        </div>
+                                        <div class="text-end">
+                                            <input type="submit" class="btn btn-primary waves-effect waves-light mt-1"
+                                                   value="Saqlash">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i
+                                    class="mdi mdi-account-circle me-1"></i> Bemor haqida malumot</h5>
+                            <div class="">
+
+                                <h4 class="font-13 text-muted text-uppercase mb-1">Tug'ilgan kuni:</h4>
+                                {% if object.birthday %}
+                                    <p class="mb-3"> {{ object.birthday }}</p>
+                                {% else %}
+                                    --
+                                {% endif %}
+                                <h4 class="font-13 text-muted text-uppercase mb-1">Qo'shilgan vaqti :</h4>
+                                <p class="mb-3"> {{ patient_first_come.come_date }}</p>
+
+                                <h4 class="font-13 text-muted text-uppercase mb-1">Yangilangan vaqti :</h4>
+                                <p class="mb-0"> {{ patient_last_come.come_date }}</p>
+
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {% for history in user.patientcomehistory_set.all %}
+                                {% if history.is_active %}
+                                    <form id="history-form" method="post">
+                                        {% csrf_token %}
+                                        <input type="text" id="patient" hidden name="patient" value="{{ user.id }}">
+                                        <input type="checkbox" hidden name="is_active">
+                                        <button class="btn btn-danger waves-effect waves-light mb-2">Bemorni
+                                            faolsizlashtirish
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            {% endfor %}
+                            {% if patients == None %}
+                                <form id="history-form" method="post">
+                                    {% csrf_token %}
+                                    <input type="text" id="patient" hidden name="patient" value="{{ user.id }}">
+                                    <input type="checkbox" hidden name="is_active" checked>
+                                    <button class="btn btn-primary waves-effect waves-light mb-2">Bemorni
+                                        faollashtirish
+                                    </button>
+                                </form>
+                            {% endif %}
+                            {#                            {% if user.patientcomehistory_set.all %}#}
+                            {#                                <table class="table" border="1" style="margin-left: -15px">#}
+                            {#                                    <thead>#}
+                            {#                                    <tr>#}
+                            {#                                        <th>#</th>#}
+                            {#                                        <th>Carta raqami</th>#}
+                            {#                                        <th>Oy/Yil</th>#}
+                            {#                                    </tr>#}
+                            {#                                    </thead>#}
+                            {#                                    <tbody>#}
+                            {#                                    {% for card in user.carduser_set.all %}#}
+                            {#                                        {% startswith card.card_number as card_num %}#}
+                            {#                                        {% month_and_year card.card_mm card.card_yy as card_m_y %}#}
+                            {#                                        <tr>#}
+                            {#                                            <td>{{ forloop.counter }}</td>#}
+                            {#                                            <td>{{ card_num }}</td>#}
+                            {#                                            <td>{{ card_m_y }}</td>#}
+                            {#                                        </tr>#}
+                            {#                                    {% endfor %}#}
+                            {#                                    </tbody>#}
+                            {#                                </table>#}
+                            {#                            {% else %}#}
+                            {#                                <h4 class="text-center text-muted">Karta topilmadi</h4>#}
+                            {#                            {% endif %}#}
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="text" id="patient" hidden name="patient" value="{{ user.id }}">
+                                <div class="mb-3">
+                                    {{ service }}
+                                    <label for="service" class="form-label">Xizmat</label>
+                                    <select name="service" id="service" class="form-control form-control-lg">
+                                        {% for service in lead_form.service %}
+                                            {{ service }}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="percentage" class="form-label">Chegirma foizi</label>
+                                    <input type="text" class="form-control" id="percentage" name="percentage"
+                                           placeholder="foiz">
+                                    <span>{{ form.percentage.errors }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="checkbox" name="paid" id="paid">
+                                    <label for="paid" class="form-label">To'ganligi holati</label>
+                                    <span>{{ form.paid.errors }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="payment_method" class="form-label">To'lov turi</label>
+                                    <select name="payment_method" id="payment_method"
+                                            class="form-control form-control-lg">
+                                        {% for payment_method in lead_form.payment_method %}
+                                            {{ payment_method }}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="text-end">
+                                    <input type="submit" onclick="doWork()" class="btn btn-primary waves-effect waves-light mt-1"
+                                           value="Saqlash" id="btn">
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- end card-->
+                </div>
+                {#                <div class="col-lg-4">#}
+                {#                    <div class="card">#}
+                {#                        <div class="card-body">#}
+                {#                            <h4>Xizmatlar tarixi</h4>#}
+                {#                            {% if user.lead_set.all %}#}
+                {#                                <table class="table" border="1" style="margin-left: -15px; font-size: 10px">#}
+                {#                                    <thead>#}
+                {#                                    <tr>#}
+                {#                                        <th>#</th>#}
+                {#                                        <th>Xizmat nomi</th>#}
+                {#                                        <th>Summa</th>#}
+                {#                                        <th>To'lov holadi</th>#}
+                {#                                        <th>To'lov turi</th>#}
+                {#                                        <th>O'chirish</th>#}
+                {#                                    </tr>#}
+                {#                                    </thead>#}
+                {#                                    <tbody>#}
+                {#                                    {% for u in user.lead_set.all %}#}
+                {#                                        <tr>#}
+                {#                                            <td>{{ forloop.counter }}</td>#}
+                {#                                            <td>{{ u.service }}</td>#}
+                {#                                            <td>{{ u.lead_price }}</td>#}
+                {#                                            <td>{{ u.paid }}</td>#}
+                {#                                            <td>{{ u.payment_method }}</td>#}
+                {#                                            <td>{{ u.payment_method }}</td>#}
+                {#                                        </tr>#}
+                {#                                    {% endfor %}#}
+                {#                                    </tbody>#}
+                {#                                </table>#}
+                {#                            {% else %}#}
+                {#                                <h4 class="text-center text-muted">Bo'lib to'lash topilmadi</h4>#}
+                {#                            {% endif %}#}
+                {##}
+                {#                        </div>#}
+                {#                    </div> <!-- end card-->#}
+                {#                </div>#}
+            </div>
+            <!-- end row -->
+            <!--Xizmatlar ro'yxati-->
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Xizmatlar tarixi</h4>
+                            {% if user.lead_set.all %}
+                                <table class="table" border="1" style="margin-left: -15px;">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Xizmat nomi</th>
+                                        <th>Summa</th>
+                                        <th>To'lov holadi</th>
+                                        <th>To'lov turi</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for u in user.lead_set.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ u.service }}</td>
+                                            <td>{{ u.lead_price|intcomma }}</td>
+                                            <td>{{ u.paid }}</td>
+                                            <td>{{ u.get_pay_display }}</td>
+                                            {#                                            <td>#}
+                                            {#                                                <form method="post"#}
+                                            {#                                                      action="{% url 'lead:lead-detail' u.pk %}">{% csrf_token %}#}
+                                            {#                                                    <a href="{% url 'lead:lead-detail' u.pk %}">O'</a>#}
+                                            {#                                                    <input type="submit">#}
+                                            {#                                                </form>#}
+                                            {#                                            </td>#}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <h4 class="text-center text-muted">Foydalanilgan xizmatlar topilmadi</h4>
+                            {% endif %}
+
+                        </div>
+                    </div> <!-- end card-->
+                </div>
+            </div>
+            <!--End Xizmatlar ro'yxati-->
+
+        </div> <!-- container -->
+
+    </div>
+    {% block js %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                const value = $(this).inputmask('unmaskedvalue');
+
+                $('#card_id').inputmask({
+                    mask: (value.substr(0, 2) === '37' || value.substr(0, 2) === '34') ? '9999999' : '9999999'
+                });
+            });
+
+            function doWork() {
+                //alert("doing work");
+                //$("#btn").attr("disabled", true) || intcomma
+                //actually this function will do something and when processing is done the button is enabled by removing the 'disabled' attribute
+                //I use setTimeout so you can see the button can only be clicked once, and can't be clicked again while work is being done
+                setTimeout('$("#btn").attr("disabled", true)', 1500);
+            }
+        </script>
+    {% endblock js %}
+{% endblock %}

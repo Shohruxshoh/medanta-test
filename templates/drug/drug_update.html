@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h4 class="page-title">Dori qo'shish</h4>
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {{ form.errors }}
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Dori nomi</label>
+                                <input type="text" class="form-control" name="name" id="phone"
+                                       placeholder="Dori nomi" value="{{ drugs.name }}">
+                                <span>{{ form.name.errors }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Necha mahal ishlatilishi</label>
+                                <input type="text" class="form-control" name="date" id="last_name"
+                                       placeholder="Necha mahal ishlatilishi" value="{{ drugs.date }}">
+                                <span>{{ form.date.errors }}</span>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Yangilash">
+                                <a href="{% url 'drug:drugs' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

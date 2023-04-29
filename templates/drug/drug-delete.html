@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <form method="post">{% csrf_token %}
+                        <h3>{{ drugs.name }}</h3>
+                        <h4>O'chirmoqchimisiz?</h4>
+                        <input type="submit" class="btn btn-danger waves-effect waves-light" value="O'chirish">
+                        <a href="{% url 'drug:drugs' %}" class="btn btn-secondary waves-effect waves-light">Bekor qilish</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

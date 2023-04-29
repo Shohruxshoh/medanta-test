@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="modal-body p-4">
+                        {% for card_id in patient.patient.card_to_user_patient.all %}
+                            <h2>ID: {{ card_id.card_id }}</h2>
+                        {% endfor %}
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>Bemor:</td>
+                                <td>{{ patient.patient.last_name }} {{ patient.patient.first_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tug'ilgan yili:</td>
+                                <td>{{ patient.patient.birthday }}</td>
+                            </tr>
+                        </table>
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+
+                            <!-- BLOCK BK-->
+                            <div class="mb-3 custom_field">
+                                <div class="row">
+                                    <div class="col"><h3>Б/К</h3></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col"><label for="bk_od" class="form-label">OD</label>
+                                        <select name="bk_od" id="bk_od" class="form-control form-control-lg">
+                                            {% for bk in form.bk %}
+                                                {{ bk }}
+                                            {% endfor %}
+                                        </select>
+                                        <span>{{ form.bk.errors }}</span>
+                                    </div>
+                                    <div class="col">
+                                        <label for="bk_os" class="form-label">OS</label>
+                                        <select name="bk_os" id="bk_os" class="form-control form-control-lg">
+                                            {% for bk in form.bk %}
+                                                {{ bk }}
+                                            {% endfor %}
+                                        </select>
+                                        <span>{{ form.bk.errors }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BLOCK BK-->
+                            <!--BLOCK CD-->
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3>С/Д</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="cd_od" class="form-label">OD</label>
+                                        <select name="cd_od" id="cd_od" class="form-control form-control-lg">
+                                            {% for cd in form.cd %}
+                                                {{ cd }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="cd_os" class="form-label">OS</label>
+                                        <select name="cd_os" id="cd_os" class="form-control form-control-lg">
+                                            {% for cd in form.cd %}
+                                                {{ cd }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <span>{{ form.cd.errors }}</span>
+
+                                </div>
+                            </div>
+                            <!--END BLOCK CD-->
+
+                            <!--BLOCK SPH-->
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3>SPH</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col">
+
+                                        <div>
+                                            <label for="sph_od" class="form-label">
+                                                <h4>OD (
+                                                    <output id="sph_odOutput">0</output>
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="sph_od" class="form-range" id="sph_od"
+                                                   value="0"
+                                                   min="-20" max="20" step="0.25"
+                                                   oninput="sph_odOutput.value=sph_od.value">
+                                        </div>
+
+                                    </div>
+                                    <div class="col">
+
+                                        <div>
+                                            <label for="sph_os" class="form-label">
+                                                <h4>OS (
+                                                    <output id="sph_osOutput">0</output>
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="sph_os" class="form-range" id="sph_os"
+                                                   value="0"
+                                                   min="-20" max="20" step="0.25"
+                                                   oninput="sph_osOutput.value=sph_os.value">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--END BLOCK SPH-->
+
+                            <!--BLOCK CYL-->
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3>CYL</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div>
+                                            <label for="cyl_od" class="form-label">
+                                                <h4>OD (
+                                                    <output id="cyl_odOutput">0</output>
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="cyl_od" class="form-range" id="cyl_od"
+                                                   value="0"
+                                                   min="-20" max="20" step="0.25"
+                                                   oninput="cyl_odOutput.value=cyl_od.value">
+                                        </div>
+
+                                    </div>
+                                    <div class="col">
+
+                                        <div>
+                                            <label for="cyl_os" class="form-label">
+                                                <h4>OS (
+                                                    <output id="cyl_osOutput">0</output>
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="cyl_os" class="form-range" id="cyl_os"
+                                                   value="0"
+                                                   min="-20" max="20" step="0.25"
+                                                   oninput="cyl_osOutput.value=cyl_os.value">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--END BLOCK CYL-->
+
+                            <!--BLOCK AX-->
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3>AX</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+
+                                        <div>
+                                            <label for="ax_od" class="form-label">
+                                                <h4>OD (
+                                                    <output id="ax_odOutput">0</output>
+                                                    °
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="ax_od" class="form-range" id="ax_od"
+                                                   value="0"
+                                                   min="0" max="180" step="1"
+                                                   oninput="ax_odOutput.value=ax_od.value">
+                                        </div>
+
+                                    </div>
+                                    <div class="col">
+
+                                        <div>
+                                            <label for="ax_os" class="form-label">
+                                                <h4>OS (
+                                                    <output id="ax_osOutput">0</output>
+                                                    °
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="ax_os" class="form-range" id="ax_os"
+                                                   value="0"
+                                                   min="0" max="180" step="1"
+                                                   oninput="ax_osOutput.value=ax_os.value">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--END BLOCK AX-->
+
+                            <!--BLOCK BLIZ-->
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3>Близ</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+
+                                        <div>
+                                            <label for="bliz_od" class="form-label">
+                                                <h4>OD (
+                                                    <output id="bliz_odOutput">0</output>
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="bliz_od" class="form-range" id="bliz_od"
+                                                   value="0"
+                                                   min="-5" max="8" step="0.5"
+                                                   oninput="bliz_odOutput.value=bliz_od.value">
+                                        </div>
+
+                                    </div>
+                                    <div class="col">
+
+                                        <div>
+                                            <label for="bliz_os" class="form-label">
+                                                <h4>OS (
+                                                    <output id="bliz_osOutput">0</output>
+                                                    )
+                                                </h4>
+                                            </label>
+                                            <input type="range" name="bliz_os" class="form-range" id="bliz_os"
+                                                   value="0"
+                                                   min="-5" max="8" step="0.5"
+                                                   oninput="bliz_osOutput.value=bliz_os.value">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--END BLOCK BLIZ-->
+
+                            <!--BLOCK CK-->
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3>С/К</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="ck_od" class="form-label">OD</label>
+                                        <select name="ck_od" id="ck_od" class="form-control form-control-lg">
+                                            {% for ck in form.ck %}
+                                                {{ ck }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="ck_os" class="form-label">OS</label>
+                                        <select name="ck_os" id="ck_os" class="form-control form-control-lg">
+                                            {% for ck in form.ck %}
+                                                {{ ck }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END BLOCK CK-->
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Saqlash">
+                                <a href="{% url 'user:employee-list' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

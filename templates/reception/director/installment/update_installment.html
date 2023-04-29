@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {#                                    {{ form.as_p }}#}
+                            {#                                    <input type="submit">#}
+                            <div class="mb-3">
+                                <label for="service" class="form-label"> Xizmat Nomi</label>
+                                <select name="service" id="service" class="form-control form-control-lg">
+                                    {% for service in form.service %}
+                                        {{ service }}
+                                    {% endfor %}
+                                </select>
+                                <span>{{ form.service.errors }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="month" class="form-label">Oy</label>
+                                <input type="number" class="form-control" name="month" id="month"
+                                       placeholder="Oy" value="{{ installment.month }}">
+                                <span>{{ form.month.errors }}</span>
+                            </div>
+                            <div class="mb-3">
+                                {% if installment.is_active %}
+                                    <input type="checkbox" class="form-check-input" id="is_active"
+                                           name="is_active"
+                                           placeholder="Holati" checked>
+                                {% else %}
+                                    <input type="checkbox" class="form-check-input" id="is_active"
+                                           name="is_active"
+                                           placeholder="Holati">
+                                {% endif %}
+                                <label for="is_active" class="form-label">Bo'lib to'lash holati</label>
+                                <span>{{ form.is_active.errors }}</span>
+                            </div>
+                             <div class="mb-3">
+                                {% if installment.is_archive %}
+                                    <input type="checkbox" class="form-check-input" id="is_archive"
+                                           name="is_archive"
+                                           placeholder="Holati" checked>
+                                {% else %}
+                                    <input type="checkbox" class="form-check-input" id="is_archive"
+                                           name="is_archive"
+                                           placeholder="Holati">
+                                {% endif %}
+                                <label for="is_archive" class="form-label">Bo'lib to'lash holati</label>
+                                <span>{{ form.is_archive.errors }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="percent" class="form-label">Foiz</label>
+                                <input type="number" class="form-control" name="percent" id="percent"
+                                       placeholder="Foiz" value="{{ installment.percent }}">
+                                <span>{{ form.percent.errors }}</span>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Saqlash">
+                                <a href="{% url 'service:installment-list' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load installment_tags %}
+{% load card_startswith_tags %}
+{% load static %}
+{% block content %}
+    <div class="content">
+    {{ request.user.phone }}
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
+                                <li class="breadcrumb-item active">Contacts</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">{{ request.user.first_name }} {{ request.user.last_name }} {{ request.user.middle_name }}</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                                <img class="d-flex me-3 rounded-circle avatar-lg"
+                                     src="{% static 'images/users/user.png' %}" alt="Generic placeholder image">
+                                <div class="w-100">
+                                    <h4 class="mt-0 mb-1">{{ request.user.phone }}</h4>
+                                    <a href="//+998{{ request.user.phone }}" class="btn- btn-xs btn-secondary">Call</a>
+                                    <a href="{% url 'deposit:partnet-update' request.user.id %}"
+                                       class="btn- btn-xs btn-secondary">Edit</a>
+                                </div>
+                            </div>
+
+                                <h4 class="font-13 text-muted text-uppercase mb-1">Tug'ilgan kuni:</h4>
+                                <p class="mb-3"> {{ request.user.birthday }}</p>
+
+                                <h4 class="font-13 text-muted text-uppercase mb-1">Qo'shilgan vaqti :</h4>
+                                <p class="mb-3"> {{ request.user.created_at }}</p>
+
+                                <h4 class="font-13 text-muted text-uppercase mb-1">Yangilangan vaqti :</h4>
+                                <p class="mb-0"> {{ request.user.updated_at }}</p>
+
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="{% url 'deposit:create-partner-card' %}"
+                               class="btn btn-primary waves-effect waves-light mb-2">Carta qo'shish</a>
+                            {% if user.partner_set.all %}
+                                <table class="table" border="1" style="margin-left: -15px">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Carta raqami</th>
+                                        <th>Oy/Yil</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for card in request.user.partner_set.all %}
+                                        {% startswith card.credit_card as card_num %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ card_num }}</td>
+                                            <td>{{ card.credit_card_month }}/{{ card.credit_card_year }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <h4 class="text-center text-muted">Karta  topilmadi</h4>
+                            {% endif %}
+
+                        </div>
+                    </div> <!-- end card-->
+                </div>
+{#                <div class="col-lg-4">#}
+{#                    <div class="card">#}
+{#                        <div class="card-body">#}
+{#                            <a href="{% url 'service:instalment-user' %}"#}
+{#                               class="btn btn-primary waves-effect waves-light mb-2">Bo'lib to'lash</a>#}
+{##}
+{#                            {% if user.payinstallmentperiod_set.all %}#}
+{#                                <table class="table" border="1" style="margin-left: -15px">#}
+{#                                    <thead>#}
+{#                                    <tr>#}
+{#                                        <th>#</th>#}
+{#                                        <th>Oy</th>#}
+{#                                        <th>Summa</th>#}
+{#                                        <th>Qoldiq</th>#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for u in user.payinstallmentperiod_set.all %}#}
+{##}
+{#                                        <tr {% if u.is_paid %}#}
+{#                                        style="background-color: #438cf5; color: white"#}
+{#                                        {% else %}#}
+{#                                        style="background-color: #f63143; color: white"#}
+{#                                        {% endif %} >#}
+{#                                            <td>{{ forloop.counter }}</td>#}
+{#                                            <td>{{ u.start_date| date:'d.m.Y' }}</td>#}
+{#                                            <td>{{ u.sum }}</td>#}
+{#                                            <td>{{ u.service }} {{ u.service.price }}</td>#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            {% else %}#}
+{#                                <h4 class="text-center text-muted">Bo'lib to'lash topilmadi</h4>#}
+{#                            {% endif %}#}
+{##}
+{#                        </div>#}
+{#                    </div> <!-- end card-->#}
+{#                </div>#}
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container -->
+
+    </div>
+{% endblock %}
