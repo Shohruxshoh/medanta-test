@@ -35,12 +35,8 @@ class CreateEmployeeView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
         self.object.clinic = self.request.user.clinic
         self.object.phone = str(self.object.phone).replace(" ", '')
         self.object.username = str(self.object.first_name) + str(self.object.phone)
-
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
-
-    def form_invalid(self, form):
-        print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
 
 
 class EmployeesListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
