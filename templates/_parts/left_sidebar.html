@@ -56,10 +56,10 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'lead:create' %}">Bemor yaratish</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a class="nav-link" href="{% url 'deposit:create-deposit' %}">Bemordan garov
                                             olish</a>
-                                    </li>
+                                    </li> -->
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'diagnostic:operation' %}">Operatsiya qildirgan
                                             bemorlar</a>
@@ -69,12 +69,12 @@
                                             orqali
                                             ro'yxatdan o'yganlar</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a class="nav-link" href="{% url 'drug:drugs' %}">Dorilar ro'yxati</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'drug:drug-create' %}">Dori qo'shish</a>
-                                    </li>
+                                    </li> -->
                                 {% endif %}
                                 {% if request.user.role == 4 or request.user.role == 0 or request.user.role == 2 or request.user.role == 3 %}
                                     <li class="nav-item">
@@ -141,7 +141,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="#installment" data-bs-toggle="collapse" class="nav-link">
                                         <span> Bo'lib to'lash </span>
                                         <span class="menu-arrow"></span>
@@ -172,7 +172,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </li>
+                                </li> -->
                                 <li class="nav-item">
                                     <a href="#parknior" data-bs-toggle="collapse" class="nav-link">
                                         <span> Hamkorlar </span>
