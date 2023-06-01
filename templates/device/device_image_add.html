@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h4 class="page-title"></h4>
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.errors }}
+                            <table class="table table-bordered">
+                                <th>*</th>
+                                <th>Nomi</th>
+                                <th>Rasm1</th>
+                                <th>Rasm2</th>
+                                {% for category in categories %}
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input type="checkbox" name="true{{ category.pk }}"
+                                                       class="form-check-input"
+                                                       id="true{{ category.pk }}">
+                                                <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                            </div>
+                                        </td>
+                                        <td>{{ category.name }}</td>
+                                        <td><input type="file" name="{{ category.name }}" placeholder="image"></td>
+                                        <td><input type="file" name="{{ category.name }}1" placeholder="image"></td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Saqlash">
+                                <a href="{% url 'diagnostic:detail-optic' come_pk %}">
+                                    <button type="button"
+                                            class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">O'tkazib yuborish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

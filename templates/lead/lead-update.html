@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {{ form.errors }}
+                            <div class="mb-3">
+                                <label for="user" class="form-label">Bemor</label>
+                                <input type="text" class="form-control" readonly name="user" id="user"
+                                       placeholder="Bemor"
+                                       value="{{ lead.user }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="service" class="form-label">Xizmat</label>
+                                <input type="text" class="form-control" name="service" id="service"
+                                       placeholder="Username" value="{{ lead.service }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="percentage" class="form-label">Chegirma foizi</label>
+                                <input type="text" class="form-control" name="percentage" id="percentage"
+                                       placeholder="Familiya" value="{{ lead.percentage }}">
+                            </div>
+                            <div class="mb-3">
+                                {% if lead.paid %}
+                                <input type="checkbox" id="paid" name="paid"
+                                       placeholder="Ism"
+                                        checked>
+                                <label for="paid" class="form-label">To'ladi</label>
+                                {% else %}
+                                    <input type="checkbox" id="paid" name="paid"
+                                       placeholder="Ism"
+                                       >
+                                <label for="paid" class="form-label">To'ladi</label>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="payment_method" class="form-label">To'lov turi</label>
+                                <select name="payment_method" id="payment_method" class="form-control form-control-lg">
+                                    <option selected
+                                            value="{{ lead.payment_method }}">{{ lead.get_pay_display }}</option>
+                                    <option value="0">Naqd</option>
+                                    <option value="1">Plastik</option>
+                                    <option value="2">Muddatli</option>
+                                    <option value="3">Qarzga</option>
+                                </select>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Yangilash">
+                                <a href="{% url 'lead:customer_detail' lead.user.pk %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#region").change(function () {
+            // get the url of the `load_cities` view
+            const regionId = $(this).val();
+            // get the selected country ID from the HTML input
+            // console.log(regionId)
+            $.ajax({                       // initialize an AJAX request
+                url: {% url 'lead:region' %},                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'region_id': regionId       // add the country id to the GET parameters
+                },
+                success: function (data) {
+                    let html_data = '<option value="">Tumanni tanlang</option>';
+                    data.forEach(function (district) {
+                        html_data += `<option value="${district.id}">${district.title}</option>`
+                    });
+                    // console.log(html_data);
+                    $("#district").html(html_data);
+                }
+            });
+
+        });
+    </script>
+{% endblock content %}

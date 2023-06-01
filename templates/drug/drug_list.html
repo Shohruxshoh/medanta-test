@@ -27,7 +27,6 @@
                 <div class="col-12">
                     <div class="page-title-box">
                         <div class="page-title-right">
-                            
                         </div>
                         <h4 class="page-title">Ro'yxat</h4>
                     </div>
@@ -48,11 +47,11 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-8">
-                                    
+
                                 </div><!-- end col-->
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-centered table-nowrap table-striped" id="basic-datatable">
+                                <table class="table table-centered table-nowrap table-striped" id="basic">
                                     <thead>
                                     <tr>
                                         <th style="width: 20px;">
@@ -62,7 +61,6 @@
                                             </div>
                                         </th>
                                         <th>Dori nomi</th>
-                                        <th>Necha mahal ishlatilishi</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
                                     </thead>
@@ -78,13 +76,6 @@
                                             <td class="table-user">
                                                 <a href=""
                                                    class="text-body fw-semibold">{{ drug.name }}</a>
-                                            </td>
-                                            <td>
-                                                {% if drug.date %}
-                                                    {{ drug.date }}
-                                                {% else %}
-                                                    --
-                                                {% endif %}
                                             </td>
                                             <td>
                                                 <a href="{% url 'drug:drug-update' drug.pk %}"
@@ -119,6 +110,7 @@
                                     {% endif %}
                                 {% endif %}
                                 </ul>
+                            </ul>
                         </div> <!-- end card-body-->
                     </div> <!-- end card-->
                 </div> <!-- end col -->
@@ -146,5 +138,7 @@
         <!-- third party js ends -->
         <script src="{% static 'js/pages/datatables.init.js' %}"></script>
     {% endblock js %}
-
+    <script>
+        $('#basic').dataTable();
+    </script>
 {% endblock content %}

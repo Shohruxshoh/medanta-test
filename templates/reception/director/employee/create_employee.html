@@ -11,6 +11,7 @@
                             {% csrf_token %}
                             {#                                    {{ form.as_p }}#}
                             {#                                    <input type="submit">#}
+                        {{ form.errors }}
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Telefon</label>
                                 <input type="text" class="form-control" name="phone" id="phone"
@@ -112,6 +113,7 @@
                                     <input type="password" id="password" name="password1" class="form-control"
                                            placeholder="Parol">
                                     <span>{{ form.password1.errors }}</span>
+                                    <span>Parol 8 ta belgidan iborat bo'lishi kerak</span>
                                     <div class="input-group-text" data-password="false">
                                         <span class="password-eye"></span>
                                     </div>
@@ -128,7 +130,7 @@
                                 </div>
                                 <br>
                                 <span>{% if form.password2.errors %}
-                                    <h4>xato</h4>
+                                    <h4>Parol 8 ta belgidan ekam yoki xato parol kiritdingiz</h4>
                                 {% endif %} </span>
                             </div>
 

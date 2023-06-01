@@ -322,6 +322,17 @@
                                             </tr>
                                         </table>
                                         <div>
+                                            {#                                        {{ patientcomehistory.deviceimage_set.all }}#}
+                                            {% for image in patientcomehistory.deviceimage_set.all %}
+                                                <div class="card">
+                                                    <h5 class="card-header">{{ image.device.name }}</h5>
+                                                    <div class="card-body">
+                                                        <img src="{{ image.image.url }}" width="100%" alt="rasm">
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div>
                                             <h3>Диагноз:
                                                 {% for patient in patientcomehistory.ophth_to_patient_come_history.all %}
                                                     {% if patient.eye == 0 %}
@@ -331,9 +342,17 @@
                                                         </h3>
                                                         <h3>РЕКОМЕНДОВАНО:
                                                             {% if patient.is_operation %}
-                                                                <span style="font-size: 25px; margin-left: 20px; font-weight: normal">Operatsiya qilinadi</span>
+                                                                <span style="font-size: 25px; margin-left: 20px; font-weight: normal">Operatsiya qilingan</span>
+                                                                <a href="{% url 'drug:operation-create' patientcomehistory.id %}">operation</a>
                                                             {% else %}
-                                                                <span style="font-size: 25px; margin-left: 20px; font-weight: normal">Dori darmon qilinadi</span>
+                                                                <span style="font-size: 25px; margin-left: 20px; font-weight: normal">Dori darmon qilingan</span>
+                                                                <a href="{% url 'drug:pharmacy-create' patientcomehistory.id %}">dori</a>
+                                                                <br>
+                                                                <button type="button" class="btn btn-outline-secondary"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#exampleModal">
+                                                                    Ko'z oynak
+                                                                </button>
                                                             {% endif %} </h3>
                                                     {% endif %}
                                                 {% endfor %}
@@ -350,4 +369,151 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ko'z oynak</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="task-form">
+                        {% csrf_token %}
+                        {{ form.errors }}
+                        <table class="table table-bordered">
+                            <th>*</th>
+                            <th>#</th>
+                            <th>OD</th>
+                            <th>OS</th>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck2">
+                                        <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td>SPH</td>
+                                {% for od in patientcomehistory.visus_to_patient_come_history.all %}
+                                    {% if od.eye == 0 %}
+                                        <td>{{ od.sph }}</td>
+                                        <input type="text" hidden name="sph_od" id="sph_od" value="{{ od.sph }}">
+                                    {% else %}
+                                        <td>{{ od.sph }}</td>
+                                        <input type="text" hidden name="sph_os" id="sph_os" value="{{ od.sph }}">
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck2">
+                                        <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td>CYL</td>
+                                {% for os in patientcomehistory.visus_to_patient_come_history.all %}
+                                    {% if os.eye == 0 %}
+                                        <td>{{ os.cyl }}</td>
+                                        <input type="text" hidden name="cyl_od" id="cyl_od" value="{{ os.cyl }}">
+                                    {% else %}
+                                        <td>{{ os.cyl }}</td>
+                                        <input type="text" hidden name="cyl_os" id="cyl_os" value="{{ os.cyl }}">
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck2">
+                                        <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td>AX</td>
+                                {% for od in patientcomehistory.visus_to_patient_come_history.all %}
+                                    {% if od.eye == 0 %}
+                                        <td>{{ od.ax }}°</td>
+                                        <input type="text" hidden name="ax_od" id="ax_od" value="{{ od.ax }}">
+                                    {% else %}
+                                        <td>{{ od.ax }}°</td>
+                                        <input type="text" hidden name="ax_os" id="ax_os" value="{{ od.ax }}">
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="true_bliz" class="form-check-input"
+                                               id="custom" value="None">
+                                        <label class="form-check-label" for="custom">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td>Близ</td>
+                                {% for od in patientcomehistory.visus_to_patient_come_history.all %}
+                                    {% if od.eye == 0 %}
+                                        <td>{{ od.bliz }}</td>
+                                        <input type="text" hidden name="bliz_od" id="bliz_od" value="{{ od.bliz }}">
+                                    {% else %}
+                                        <td>{{ od.bliz }}</td>
+                                        <input type="text" hidden name="bliz_os" id="bliz_os" value="{{ od.bliz }}">
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        </table>
+                        <div class="mb-3">
+                            <label for="dp" class="form-label">DP</label>
+                            <input type="text" class="form-control" name="dp" id="dp"
+                                   placeholder="DP" required>
+                            <span>{{ form.dp.errors }}</span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" data-bs-dismiss="modal" class="btn btn-primary"
+                                    class="btn btn-primary">Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).on('submit', '#task-form', function (e) {
+            {#alert($('#custom').is(":checked"))#}
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "glasses:glasses-create" patientcomehistory.id %}',
+                data:
+                    {
+                        sph_od: $("#sph_od").val(),
+                        sph_os: $("#sph_os").val(),
+                        cyl_od: $("#cyl_od").val(),
+                        cyl_os: $("#cyl_os").val(),
+                        ax_od: $("#ax_od").val(),
+                        ax_os: $("#ax_os").val(),
+                        bliz_od: $("#bliz_od").val(),
+                        bliz_os: $("#bliz_os").val(),
+                        dp: $("#dp").val(),
+                        true_bliz: $('#custom').is(":checked"),
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                success: function () {
+                    $("#sph_od").val(""),
+                        $("#sph_os").val(""),
+                        $("#cyl_od").val(""),
+                        $("#cyl_os").val(""),
+                        $("#ax_od").val(""),
+                        $("#ax_os").val(""),
+                        $("#bliz_od").val(""),
+                        $("#bliz_os").val(""),
+                        $("#dp").val(""),
+                        alert('Saved');
+                }
+            })
+        });
+    </script>
 {% endblock %}

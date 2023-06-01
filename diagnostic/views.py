@@ -8,7 +8,7 @@ from diagnostic.models import Visus, Complaint, Eyelids, Eyeball, Conjunctiva, �
     VitreousBody, OcularFundus, Diagnosis, OphthalmologyStatus
 from medanta.mixins import AllowedRolesMixin
 from patient.models import PatientComeHistory
-from user.models import NURSE, ADMINISTRATOR, DOCTOR, RECEPTION
+from user.models import NURSE, ADMINISTRATOR, DOCTOR, RECEPTION, User
 
 
 # Create your views here.
@@ -59,7 +59,7 @@ class PatientComeListActiveView(AllowedRolesMixin, LoginRequiredMixin, ListView)
     template_name = 'nurse/patient_come.html'
 
     def get_queryset(self):
-        queryset = PatientComeHistory.objects.filter(is_active=True)
+        queryset = PatientComeHistory.objects.filter(patient__clinic=self.request.user.clinic, is_active=True)
         return queryset
 
 
@@ -69,13 +69,19 @@ class VisusPatientDetailView(AllowedRolesMixin, LoginRequiredMixin, DetailView):
     template_name = 'nurse/visus_patient_detail.html'
 
 
-class ComplaintListView(LoginRequiredMixin, ListView):
+class ComplaintListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Complaint
     paginate_by = 50
     template_name = 'diagnostic/complaint/complaints.html'
 
+    def get_queryset(self):
+        queryset = Complaint.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class ComplaintCreateView(LoginRequiredMixin, CreateView):
+
+class ComplaintCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Complaint
     template_name = 'diagnostic/complaint/complaint-create.html'
     fields = ['title']
@@ -87,26 +93,34 @@ class ComplaintCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:complaints')
 
 
-class ComplaintUpdateView(LoginRequiredMixin, UpdateView):
+class ComplaintUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Complaint
     template_name = 'diagnostic/complaint/complaint-update.html'
     fields = ['title']
     success_url = '/diagnostic/complaints'
 
 
-class ComplaintDeleteView(LoginRequiredMixin, DeleteView):
+class ComplaintDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Complaint
     template_name = 'diagnostic/complaint/complaint-delete.html'
     success_url = '/diagnostic/complaints'
 
 
-class EyelidsListView(LoginRequiredMixin, ListView):
+class EyelidsListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyelids
     paginate_by = 50
     template_name = "diagnostic/eyelids/eyelids.html"
 
+    def get_queryset(self):
+        queryset = Eyelids.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class EyelidsCreateView(LoginRequiredMixin, CreateView):
+
+class EyelidsCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyelids
     template_name = 'diagnostic/eyelids/eyelid-create.html'
     fields = ['title']
@@ -118,26 +132,32 @@ class EyelidsCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:eyelids')
 
 
-class EyelidsUpdateView(LoginRequiredMixin, UpdateView):
+class EyelidsUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyelids
     template_name = 'diagnostic/eyelids/eyelid-update.html'
     fields = ['title']
     success_url = '/diagnostic/eyelids'
 
 
-class EyelidsDeleteView(LoginRequiredMixin, DeleteView):
+class EyelidsDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
     model = Eyelids
     template_name = 'diagnostic/eyelids/eyelid-delete.html'
     success_url = '/diagnostic/eyelids'
 
 
-class EyeballListView(LoginRequiredMixin, ListView):
+class EyeballListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
     model = Eyeball
     paginate_by = 50
     template_name = "diagnostic/eyeball/eyeballs.html"
 
+    def get_queryset(self):
+        queryset = Eyeball.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class EyeballCreateView(LoginRequiredMixin, CreateView):
+
+class EyeballCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyeball
     template_name = 'diagnostic/eyeball/eyeball-create.html'
     fields = ['title']
@@ -149,26 +169,34 @@ class EyeballCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:eyeballs')
 
 
-class EyeballUpdateView(LoginRequiredMixin, UpdateView):
+class EyeballUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyeball
     template_name = 'diagnostic/eyeball/eyeball-update.html'
     fields = ['title']
     success_url = '/diagnostic/eyeball'
 
 
-class EyeballDeleteView(LoginRequiredMixin, DeleteView):
+class EyeballDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyeball
     template_name = 'diagnostic/eyeball/eyeball-delete.html'
     success_url = '/diagnostic/eyeball'
 
 
-class ConjunctivaListView(LoginRequiredMixin, ListView):
+class ConjunctivaListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Conjunctiva
     paginate_by = 50
     template_name = "diagnostic/conjunctiva/conjunctiva.html"
 
+    def get_queryset(self):
+        queryset = Conjunctiva.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class ConjunctivaCreateView(LoginRequiredMixin, CreateView):
+
+class ConjunctivaCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Conjunctiva
     template_name = 'diagnostic/conjunctiva/conjunctiva-create.html'
     fields = ['title']
@@ -180,26 +208,34 @@ class ConjunctivaCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:conjunctivas')
 
 
-class ConjunctivaUpdateView(LoginRequiredMixin, UpdateView):
+class ConjunctivaUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Conjunctiva
     template_name = 'diagnostic/conjunctiva/conjunctiva-update.html'
     fields = ['title']
     success_url = '/diagnostic/conjunctiva'
 
 
-class ConjunctivaDeleteView(LoginRequiredMixin, DeleteView):
+class ConjunctivaDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Conjunctiva
     template_name = 'diagnostic/conjunctiva/conjunctiva-delete.html'
     success_url = '/diagnostic/conjunctiva'
 
 
-class СorneaListView(LoginRequiredMixin, ListView):
+class СorneaListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Сornea
     paginate_by = 50
     template_name = "diagnostic/cornea/cornea.html"
 
+    def get_queryset(self):
+        queryset = Сornea.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class СorneaCreateView(LoginRequiredMixin, CreateView):
+
+class СorneaCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Сornea
     template_name = 'diagnostic/cornea/cornea-create.html'
     fields = ['title']
@@ -211,26 +247,34 @@ class СorneaCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:corneas')
 
 
-class СorneaUpdateView(LoginRequiredMixin, UpdateView):
+class СorneaUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Сornea
     template_name = 'diagnostic/cornea/cornea-update.html'
     fields = ['title']
     success_url = '/diagnostic/corneas'
 
 
-class СorneaDeleteView(LoginRequiredMixin, DeleteView):
+class СorneaDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Сornea
     template_name = 'diagnostic/cornea/cornea-delete.html'
     success_url = '/diagnostic/corneas'
 
 
-class FrontCameraListView(LoginRequiredMixin, ListView):
+class FrontCameraListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = FrontCamera
     paginate_by = 50
     template_name = "diagnostic/front-camera/front-cameras.html"
 
+    def get_queryset(self):
+        queryset = FrontCamera.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class FrontCameraCreateView(LoginRequiredMixin, CreateView):
+
+class FrontCameraCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = FrontCamera
     template_name = 'diagnostic/front-camera/front-camera-create.html'
     fields = ['title']
@@ -242,7 +286,8 @@ class FrontCameraCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:front-cameras')
 
 
-class FrontCameraUpdateView(LoginRequiredMixin, UpdateView):
+class FrontCameraUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = FrontCamera
     template_name = 'diagnostic/front-camera/front-camera-update.html'
     fields = ['title']
@@ -250,18 +295,25 @@ class FrontCameraUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class FrontCameraDeleteView(LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = FrontCamera
     template_name = 'diagnostic/front-camera/front-camera-delete.html'
     success_url = '/diagnostic/front-cameras'
 
 
-class PupilOfTheEyeListView(LoginRequiredMixin, ListView):
+class PupilOfTheEyeListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = PupilOfTheEye
     paginate_by = 50
     template_name = "diagnostic/pupil-of-the-eye/pupil-of-the-eye.html"
 
+    def get_queryset(self):
+        queryset = PupilOfTheEye.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class PupilOfTheEyeCreateView(LoginRequiredMixin, CreateView):
+
+class PupilOfTheEyeCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = PupilOfTheEye
     template_name = 'diagnostic/pupil-of-the-eye/pupil-of-the-eye-create.html'
     fields = ['title']
@@ -273,26 +325,34 @@ class PupilOfTheEyeCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:pupil-of-the-eye')
 
 
-class PupilOfTheEyeUpdateView(LoginRequiredMixin, UpdateView):
+class PupilOfTheEyeUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = PupilOfTheEye
     template_name = 'diagnostic/pupil-of-the-eye/pupil-of-the-eye-update.html'
     fields = ['title']
     success_url = '/diagnostic/pupil-of-the-eye'
 
 
-class PupilOfTheEyeDeleteView(LoginRequiredMixin, DeleteView):
+class PupilOfTheEyeDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = PupilOfTheEye
     template_name = 'diagnostic/pupil-of-the-eye/pupil-of-the-eye-delete.html'
     success_url = '/diagnostic/pupil-of-the-eye'
 
 
-class LensListView(LoginRequiredMixin, ListView):
+class LensListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Lens
     paginate_by = 50
     template_name = "diagnostic/lens/lens.html"
 
+    def get_queryset(self):
+        queryset = Lens.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class LensCreateView(LoginRequiredMixin, CreateView):
+
+class LensCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Lens
     template_name = 'diagnostic/lens/lens-create.html'
     fields = ['title']
@@ -304,26 +364,34 @@ class LensCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:lens')
 
 
-class LensUpdateView(LoginRequiredMixin, UpdateView):
+class LensUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Lens
     template_name = 'diagnostic/lens/lens-update.html'
     fields = ['title']
     success_url = '/diagnostic/lens'
 
 
-class LensDeleteView(LoginRequiredMixin, DeleteView):
+class LensDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Lens
     template_name = 'diagnostic/lens/lens-delete.html'
     success_url = '/diagnostic/lens'
 
 
-class VitreousBodyListView(LoginRequiredMixin, ListView):
+class VitreousBodyListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = VitreousBody
     paginate_by = 50
     template_name = "diagnostic/vitreous-body/vitreous-body.html"
 
+    def get_queryset(self):
+        queryset = VitreousBody.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class VitreousBodyCreateView(LoginRequiredMixin, CreateView):
+
+class VitreousBodyCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = VitreousBody
     template_name = 'diagnostic/vitreous-body/vitreous-body-create.html'
     fields = ['title']
@@ -335,26 +403,34 @@ class VitreousBodyCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:vitreous-body')
 
 
-class VitreousBodyUpdateView(LoginRequiredMixin, UpdateView):
+class VitreousBodyUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = VitreousBody
     template_name = 'diagnostic/vitreous-body/vitreous-body-update.html'
     fields = ['title']
     success_url = '/diagnostic/vitreous-body'
 
 
-class VitreousBodyDeleteView(LoginRequiredMixin, DeleteView):
+class VitreousBodyDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = VitreousBody
     template_name = 'diagnostic/vitreous-body/vitreous-body-delete.html'
     success_url = '/diagnostic/vitreous-body'
 
 
-class OcularFundusListView(LoginRequiredMixin, ListView):
+class OcularFundusListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = OcularFundus
     paginate_by = 50
     template_name = "diagnostic/ocular-fundus/ocular-fundus.html"
 
+    def get_queryset(self):
+        queryset = OcularFundus.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class OcularFundusCreateView(LoginRequiredMixin, CreateView):
+
+class OcularFundusCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = OcularFundus
     template_name = 'diagnostic/ocular-fundus/ocular-fundus-create.html'
     fields = ['title']
@@ -366,26 +442,34 @@ class OcularFundusCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:ocular-fundus')
 
 
-class OcularFundusUpdateView(LoginRequiredMixin, UpdateView):
+class OcularFundusUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = OcularFundus
     template_name = 'diagnostic/ocular-fundus/ocular-fundus-update.html'
     fields = ['title']
     success_url = '/diagnostic/ocular-fundus'
 
 
-class OcularFundusDeleteView(LoginRequiredMixin, DeleteView):
+class OcularFundusDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = OcularFundus
     template_name = 'diagnostic/ocular-fundus/ocular-fundus-delete.html'
     success_url = '/diagnostic/ocular-fundus'
 
 
-class DiagnosisListView(LoginRequiredMixin, ListView):
+class DiagnosisListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Diagnosis
     paginate_by = 50
     template_name = "diagnostic/diagnosis/diagnosis.html"
 
+    def get_queryset(self):
+        queryset = Diagnosis.objects.filter(clinic_id=self.request.user.clinic.pk)
+        return queryset
 
-class DiagnosisCreateView(LoginRequiredMixin, CreateView):
+
+class DiagnosisCreateView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Diagnosis
     template_name = 'diagnostic/diagnosis/diagnosis-create.html'
     fields = ['title']
@@ -397,20 +481,24 @@ class DiagnosisCreateView(LoginRequiredMixin, CreateView):
         return redirect('diagnostic:diagnosis')
 
 
-class DiagnosisUpdateView(LoginRequiredMixin, UpdateView):
+class DiagnosisUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Diagnosis
     template_name = 'diagnostic/diagnosis/diagnosis-update.html'
     fields = ['title']
     success_url = '/diagnostic/diagnosis'
 
 
-class DiagnosisDeleteView(LoginRequiredMixin, DeleteView):
+class DiagnosisDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Diagnosis
     template_name = 'diagnostic/diagnosis/diagnosis-delete.html'
     success_url = '/diagnostic/diagnosis'
 
 
-class OphthalmologyStatusCreateView(LoginRequiredMixin, View):
+class OphthalmologyStatusCreateView(AllowedRolesMixin, LoginRequiredMixin, View):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
+
     def get(self, request, come_history_id, *args, **kwargs):
         patients = PatientComeHistory.objects.filter(pk=come_history_id, is_active=True)
         visus = ''
@@ -418,7 +506,8 @@ class OphthalmologyStatusCreateView(LoginRequiredMixin, View):
             visus = Visus.objects.filter(patient_come_history=patient)
         form = OphthalmologyStatusForm()
         complains = Complaint.objects.all()
-        context = {'form': form, 'patient': patients, "visus": visus, "complains": complains}
+        context = {'form': form, 'patient': patients, "visus": visus, "complains": complains,
+                   "come_history_id": come_history_id}
         return render(request, 'diagnostic/doctor.html', context)
 
     def post(self, request, come_history_id, *args, **kwargs):
@@ -462,6 +551,10 @@ class OphthalmologyStatusCreateView(LoginRequiredMixin, View):
                                                           anamnesis=anamnesis, hour_indicator=hour_indicator_od,
                                                           patient_come_history_id=come_history_id,
                                                           doctor_id=request.user.pk)
+                if is_operation:
+                    patient = User.objects.get(patientcomehistory=come_history_id)
+                    patient.is_operation = True
+                    patient.save()
                 o_od.save()
                 o_od.complaints.set(complaints)
                 o_od.eyelids.set(eyelids_od)
@@ -514,8 +607,9 @@ class OphthalmologyStatusCreateView(LoginRequiredMixin, View):
                 #                                        diagnosis=diagnosis, is_operation=is_operation,
                 #                                        patient_come_history_id=come_history_id,
                 #                                        doctor_id=request.user.pk)
+
                 messages.success(request, "Success")
-                return redirect('diagnostic:detail-optic', pk=come_history_id)
+                return redirect('device:add-image', pk=come_history_id)
         else:
             form = OphthalmologyStatusForm()
             context = {'form': form}
@@ -529,8 +623,9 @@ class OphthalmologyStatusDetailView(AllowedRolesMixin, LoginRequiredMixin, Detai
     template_name = 'diagnostic/full_patient_detail.html'
 
 
-class OperationView(LoginRequiredMixin, ListView):
-    model = PatientComeHistory
+class OperationView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
+    model = User
     paginate_by = 50
     template_name = 'operation/operation-list.html'
 
@@ -540,9 +635,14 @@ class OphthalmologyStatusListNowHave(AllowedRolesMixin, LoginRequiredMixin, List
     model = PatientComeHistory
     template_name = 'doctor/now_patient.html'
 
+    def get_queryset(self):
+        queryset = PatientComeHistory.objects.filter(patient__clinic=self.request.user.clinic)
+        return queryset
+
     def get_context_data(self, object_list=None, *args, **kwargs):
         ctx = super(OphthalmologyStatusListNowHave, self).get_context_data(**kwargs)
         for i in self.object_list:
             if i.is_active:
-                ctx['visus'] = Visus.objects.filter(patient_come_history=i, patient_come_history__is_active=True)
+                ctx['visus'] = Visus.objects.filter(patient_come_history=i,
+                                                    patient_come_history__is_active=True)
         return ctx

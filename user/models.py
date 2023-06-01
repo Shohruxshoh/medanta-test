@@ -48,6 +48,7 @@ ACCOUNTANT = 5
 MANAGER = 6
 PATIENT = 7
 PARTNER = 8
+GLASSES = 9
 
 ROLE = (
     (DIRECTOR, 'Direktor'),
@@ -59,6 +60,7 @@ ROLE = (
     (MANAGER, 'Menejer'),
     (PATIENT, 'Bemor'),
     (PARTNER, 'Hamkor'),
+    (GLASSES, "Ko'z oynak")
 )
 
 MAN = 0
@@ -152,6 +154,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False, blank=True)
     is_active = models.BooleanField(default=True, blank=True)
     last_login = models.DateTimeField(null=True, auto_now=True)
+    is_operation = models.BooleanField(default=False, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     gender = models.IntegerField(verbose_name='Jinsi', choices=GENDER_CHOICES, default=MAN, null=True, blank=True)
     turbo = models.CharField(max_length=200, blank=True, null=True, validators=[MinLengthValidator(5)])

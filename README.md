@@ -1,1 +1,0 @@
-# medanta-test

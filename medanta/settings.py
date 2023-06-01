@@ -17,9 +17,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+from dotenv import load_dotenv
 
+load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j=#jr%4-5xpm8g))z-8(*l+qb&$_jnbg)*l^5_2dzpv8gc5b@4'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,6 +50,10 @@ INSTALLED_APPS = [
     'diagnostic',
     'django.contrib.humanize',
     'drug',
+    'glasses',
+    'accountant',
+    'qrcode',
+    'device',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +141,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_DIR = BASE_DIR / 'media'
-MEDIA_ROOT = MEDIA_DIR
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

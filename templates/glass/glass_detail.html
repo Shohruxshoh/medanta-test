@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3" style="background-color: #e8e7e7">
+                        <div class="pb-2"
+                             style="margin: 0 auto; width: 250px;  border: 1px solid black; background-color: #fff;text-align: center;"
+                             id='DivIdToPrint'>
+                            <div class="modal-body p-4">
+                                <h3>Рецепт на очки</h3>
+                                <h4>{{ glass.create_at|date:"d-M-Y" }}</h4>
+                                <table class="table table-bordered">
+                                    <th>#</th>
+                                    <th>OD</th>
+                                    <th>OS</th>
+                                    <tr>
+                                        <td>SPH</td>
+                                        {#                                    {% for od in glass %}#}
+                                        {#                                        {% if od.eye == 0 %}#}
+                                        <td>{{ glass.sph_od }}</td>
+                                        <input type="text" hidden name="sph_od" value="{{ glass.sph_od }}">
+                                        {#                                        {% else %}#}
+                                        <td>{{ glass.sph_os }}</td>
+                                        <input type="text" hidden name="sph_os" value="{{ glass.sph_os }}">
+                                        {#                                        {% endif %}#}
+                                        {#                                    {% endfor %}#}
+                                    </tr>
+                                    <tr>
+                                        <td>CYL</td>
+                                        {#                                    {% for os in glass %}#}
+                                        {#                                        {% if os.eye == 0 %}#}
+                                        <td>{{ glass.cyl_od }}</td>
+                                        <input type="text" hidden name="cyl_od" value="{{ glass.cyl_od }}">
+                                        {#                                        {% else %}#}
+                                        <td>{{ glass.cyl_os }}</td>
+                                        <input type="text" hidden name="cyl_os" value="{{ glass.cyl_os }}">
+                                        {#                                        {% endif %}#}
+                                        {#                                    {% endfor %}#}
+                                    </tr>
+                                    <tr>
+                                        <td>AX</td>
+                                        {#                                    {% for od in visus %}#}
+                                        {#                                        {% if od.eye == 0 %}#}
+                                        <td>{{ glass.ax_od }}°</td>
+                                        <input type="text" hidden name="ax_od" value="{{ glass.ax_od }}">
+                                        {#                                        {% else %}#}
+                                        <td>{{ glass.ax_os }}</td>
+                                        <input type="text" hidden name="ax_os" value="{{ glass.ax_os }}">
+                                        {#                                        {% endif %}#}
+                                        {#                                    {% endfor %}#}
+                                    </tr>
+                                    {% if glass.bliz_od == None %}
+                                        <span></span>
+                                    {% else %}
+                                        <tr>
+                                            <td>Близ</td>
+                                            {#                                    {% for od in visus %}#}
+                                            {#                                        {% if od.eye == 0 %}#}
+                                            <td>{{ glass.bliz_od }}</td>
+                                            <input type="text" hidden name="bliz_od" value="{{ glass.bliz_od }}">
+                                            {#                                        {% else %}#}
+                                            <td>{{ glass.bliz_os }}</td>
+                                            <input type="text" hidden name="bliz_os" value="{{ glass.bliz_os }}">
+                                            {#                                        {% endif %}#}
+                                            {#                                    {% endfor %}#}
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td>DP</td>
+                                        <td>
+                                            {{ glass.dp }}
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="mb-3" style="display:flex;">
+                                    <h5>Bemor:</h5>
+                                    <span style="margin: 3%">{{ glass.patient.patient.last_name }} {{ glass.patient.patient.first_name }} {{ glass.patient.patient.middle_name }}</span>
+                                </div>
+                                <div class="mb-3" style="display:flex;">
+                                    <h5>Shifokor:</h5>
+                                    <span style="margin: 3%">{{ request.user.last_name }} {{ request.user.first_name }} {{ request.user.middle_name }}|{{ request.user.phone }}</span>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <input type='button' id='btn' value='Chop etish ' class="btn btn-info"
+                               style="margin: 0 auto;" onclick='printDiv();'>
+                    </div>
+                    <form id="post-form" method="post">
+                        {% csrf_token %}
+                        {{ form.errors }}
+                        <input type="text" name="object_pk" hidden value="{{ pk }}">
+                        <div class="text-end">
+                            <input type="submit" class="btn btn-success waves-effect waves-light"
+                                   placeholder="Save" value="Berildi">
+                            <a href="{% url 'glasses:glasses-list-now' %}">
+                                <button type="button" class="btn btn-danger waves-effect waves-light"
+                                        data-bs-dismiss="modal">Bekor qolish
+                                </button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function printDiv() {
+
+            var divToPrint = document.getElementById('DivIdToPrint');
+
+            var newWin = window.open('', 'Print-Window');
+
+            newWin.document.open();
+
+            newWin.document.write('<!DOCTYPE html><html><body onload="window.print()" style="text-align: center">' + divToPrint.innerHTML + '</body></html>');
+
+            newWin.document.close();
+
+            setTimeout(function () {
+                newWin.close();
+            }, 10);
+
+        }
+    </script>
+{% endblock content %}

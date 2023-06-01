@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h4 class="page-title">Рецепт на очки</h4>
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {{ form.errors }}
+                            <table class="table table-bordered">
+                                <th>*</th>
+                                <th>#</th>
+                                <th>OD</th>
+                                <th>OS</th>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="customCheck2">
+                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>SPH</td>
+                                    {% for od in visus %}
+                                        {% if od.eye == 0 %}
+                                            <td>{{ od.sph }}</td>
+                                            <input type="text" hidden name="sph_od" value="{{ od.sph }}">
+                                        {% else %}
+                                            <td>{{ od.sph }}</td>
+                                            <input type="text" hidden name="sph_os" value="{{ od.sph }}">
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="customCheck2">
+                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>CYL</td>
+                                    {% for os in visus %}
+                                        {% if os.eye == 0 %}
+                                            <td>{{ os.cyl }}</td>
+                                            <input type="text" hidden name="cyl_od" value="{{ os.cyl }}">
+                                        {% else %}
+                                            <td>{{ os.cyl }}</td>
+                                            <input type="text" hidden name="cyl_os" value="{{ os.cyl }}">
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="customCheck2">
+                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>AX</td>
+                                    {% for od in visus %}
+                                        {% if od.eye == 0 %}
+                                            <td>{{ od.ax }}°</td>
+                                            <input type="text" hidden name="ax_od" value="{{ od.ax }}">
+                                        {% else %}
+                                            <td>{{ od.ax }}</td>
+                                            <input type="text" hidden name="ax_os" value="{{ od.ax }}">
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" name="true_bliz" class="form-check-input" id="customCheck2">
+                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>Близ</td>
+                                    {% for od in visus %}
+                                        {% if od.eye == 0 %}
+                                            <td>{{ od.bliz }}</td>
+                                            <input type="text" hidden name="bliz_od" value="{{ od.bliz }}">
+                                        {% else %}
+                                            <td>{{ od.bliz }}</td>
+                                            <input type="text" hidden name="bliz_os" value="{{ od.bliz }}">
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </table>
+                            <div class="mb-3">
+                                <label for="dp" class="form-label">DP</label>
+                                <input type="text" class="form-control" name="dp" id="dp"
+                                       placeholder="DP">
+                                <span>{{ form.dp.errors }}</span>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Saqlash">
+                                <a href="{% url 'glasses:glasses-list' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

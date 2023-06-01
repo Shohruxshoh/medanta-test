@@ -17,3 +17,17 @@ class CardUser(BaseModel, models.Model):
 
     def __str__(self):
         return f"{self.user.last_name} {self.card_number}"
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title
+
+
+class Post1(models.Model):
+    title = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title

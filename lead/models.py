@@ -22,6 +22,7 @@ class Lead(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
     lead_price = models.IntegerField(default=0)
+    operation_came_time = models.CharField(max_length=10, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)

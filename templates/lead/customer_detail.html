@@ -7,25 +7,23 @@
     <div class="content">
         <!-- Start Content-->
         <div class="container-fluid">
-
             <!-- start page title -->
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
                         <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                                <li class="breadcrumb-item active">Contacts</li>
-                            </ol>
+                            <a href="{% url 'patient:qr-second' user.pk %}"
+                               class="btn btn-outline-secondary waves-effect waves-light mt-1">Print</a>
+                        </div>
+                        <div class="page-title-right" style="margin-right: 15px">
+                            <a href="{% url 'patient:qr-come-patient' user.pk %}"
+                               class="btn btn-outline-info waves-effect waves-light mt-1">Karta</a>
                         </div>
                         <h4 class="page-title">{{ object.first_name }} {{ object.last_name }} {{ object.middle_name }}</h4>
                     </div>
                 </div>
             </div>
             <!-- end page title -->
-
-
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card">
@@ -56,11 +54,30 @@
                                     </form>
                                 </div>
                             </div>
-
                             <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i
                                     class="mdi mdi-account-circle me-1"></i> Bemor haqida malumot</h5>
                             <div class="">
-
+                                {% if object.district %}
+                                    <p class="mb-3"> {{ object.district }}</p>
+                                {% else %}
+                                    --
+                                {% endif %}
+                                {% if object.address %}
+                                    <p class="mb-3"> {{ object.address }}</p>
+                                {% else %}
+                                    --
+                                {% endif %}
+                                <h4 class="font-13 text-muted text-uppercase mb-1">Pasport malumotlari:</h4>
+                                {% if object.passport_seria and object.passport_number %}
+                                    <p class="mb-3"> {{ object.passport_seria }}{{ object.passport_number }}</p>
+                                {% else %}
+                                    --
+                                {% endif %}
+                                {% if object.person_id %}
+                                    <p class="mb-3"> {{ object.person_id }}</p>
+                                {% else %}
+                                    --
+                                {% endif %}
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Tug'ilgan kuni:</h4>
                                 {% if object.birthday %}
                                     <p class="mb-3"> {{ object.birthday }}</p>
@@ -72,7 +89,6 @@
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Yangilangan vaqti :</h4>
                                 <p class="mb-0"> {{ patient_last_come.come_date }}</p>
-
                             </div>
                         </div>
                     </div> <!-- end card-->
@@ -102,31 +118,6 @@
                                     </button>
                                 </form>
                             {% endif %}
-                            {#                            {% if user.patientcomehistory_set.all %}#}
-                            {#                                <table class="table" border="1" style="margin-left: -15px">#}
-                            {#                                    <thead>#}
-                            {#                                    <tr>#}
-                            {#                                        <th>#</th>#}
-                            {#                                        <th>Carta raqami</th>#}
-                            {#                                        <th>Oy/Yil</th>#}
-                            {#                                    </tr>#}
-                            {#                                    </thead>#}
-                            {#                                    <tbody>#}
-                            {#                                    {% for card in user.carduser_set.all %}#}
-                            {#                                        {% startswith card.card_number as card_num %}#}
-                            {#                                        {% month_and_year card.card_mm card.card_yy as card_m_y %}#}
-                            {#                                        <tr>#}
-                            {#                                            <td>{{ forloop.counter }}</td>#}
-                            {#                                            <td>{{ card_num }}</td>#}
-                            {#                                            <td>{{ card_m_y }}</td>#}
-                            {#                                        </tr>#}
-                            {#                                    {% endfor %}#}
-                            {#                                    </tbody>#}
-                            {#                                </table>#}
-                            {#                            {% else %}#}
-                            {#                                <h4 class="text-center text-muted">Karta topilmadi</h4>#}
-                            {#                            {% endif %}#}
-
                             <form method="post">
                                 {% csrf_token %}
                                 <input type="text" id="patient" hidden name="patient" value="{{ user.id }}">
@@ -160,54 +151,46 @@
                                     </select>
                                 </div>
                                 <div class="text-end">
-                                    <input type="submit" onclick="doWork()" class="btn btn-primary waves-effect waves-light mt-1"
+                                    <input type="submit" onclick="doWork()"
+                                           class="btn btn-primary waves-effect waves-light mt-1"
                                            value="Saqlash" id="btn">
                                 </div>
                             </form>
                         </div>
                     </div> <!-- end card-->
                 </div>
-                {#                <div class="col-lg-4">#}
-                {#                    <div class="card">#}
-                {#                        <div class="card-body">#}
-                {#                            <h4>Xizmatlar tarixi</h4>#}
-                {#                            {% if user.lead_set.all %}#}
-                {#                                <table class="table" border="1" style="margin-left: -15px; font-size: 10px">#}
-                {#                                    <thead>#}
-                {#                                    <tr>#}
-                {#                                        <th>#</th>#}
-                {#                                        <th>Xizmat nomi</th>#}
-                {#                                        <th>Summa</th>#}
-                {#                                        <th>To'lov holadi</th>#}
-                {#                                        <th>To'lov turi</th>#}
-                {#                                        <th>O'chirish</th>#}
-                {#                                    </tr>#}
-                {#                                    </thead>#}
-                {#                                    <tbody>#}
-                {#                                    {% for u in user.lead_set.all %}#}
-                {#                                        <tr>#}
-                {#                                            <td>{{ forloop.counter }}</td>#}
-                {#                                            <td>{{ u.service }}</td>#}
-                {#                                            <td>{{ u.lead_price }}</td>#}
-                {#                                            <td>{{ u.paid }}</td>#}
-                {#                                            <td>{{ u.payment_method }}</td>#}
-                {#                                            <td>{{ u.payment_method }}</td>#}
-                {#                                        </tr>#}
-                {#                                    {% endfor %}#}
-                {#                                    </tbody>#}
-                {#                                </table>#}
-                {#                            {% else %}#}
-                {#                                <h4 class="text-center text-muted">Bo'lib to'lash topilmadi</h4>#}
-                {#                            {% endif %}#}
-                {##}
-                {#                        </div>#}
-                {#                    </div> <!-- end card-->#}
-                {#                </div>#}
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Garov</h4>
+                            <hr>
+                            <form id="history-form" method="post">
+                                {% csrf_token %}
+                                <input type="text" id="patient" hidden name="patient" value="{{ user.id }}">
+                                <div class="mb-3">
+                                    <label for="service_deposit" class="form-label">Xizmat</label>
+                                    <select name="service_deposit" id="service_deposit"
+                                            class="form-control form-control-lg">
+                                        {% for service in lead_form.service %}
+                                            {{ service }}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <label for="service" class="form-label">Summa</label>
+                                <input type="text" class="form-control" id="card_id" name="summa"
+                                       placeholder="Summa">
+                                <div class="text-end mt-3">
+                                    <button class="btn btn-primary waves-effect waves-light mb-2">Saqlash</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- end card-->
+                </div>
             </div>
             <!-- end row -->
             <!--Xizmatlar ro'yxati-->
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
                             <h4>Xizmatlar tarixi</h4>
@@ -219,7 +202,9 @@
                                         <th>Xizmat nomi</th>
                                         <th>Summa</th>
                                         <th>To'lov holadi</th>
+                                        <th>Qachon qilinganligi</th>
                                         <th>To'lov turi</th>
+                                        <th>*</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -228,16 +213,54 @@
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{ u.service }}</td>
                                             <td>{{ u.lead_price|intcomma }}</td>
-                                            <td>{{ u.paid }}</td>
+                                            <td>
+                                                {% if u.paid %}
+                                                    To'langan
+                                                {% else %}
+                                                    To'lanmagan
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ u.operation_came_time }}</td>
                                             <td>{{ u.get_pay_display }}</td>
-                                            {#                                            <td>#}
-                                            {#                                                <form method="post"#}
-                                            {#                                                      action="{% url 'lead:lead-detail' u.pk %}">{% csrf_token %}#}
-                                            {#                                                    <a href="{% url 'lead:lead-detail' u.pk %}">O'</a>#}
-                                            {#                                                    <input type="submit">#}
-                                            {#                                                </form>#}
-                                            {#                                            </td>#}
+                                            <td><a href="{% url 'lead:lead_update' u.pk %}"
+                                                   class="action-icon"> <i
+                                                    class="mdi mdi-square-edit-outline"></i></a></td>
                                         </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <h4 class="text-center text-muted">Foydalanilgan xizmatlar topilmadi</h4>
+                            {% endif %}
+
+                        </div>
+                    </div> <!-- end card-->
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Garov olinganligi</h4>
+                            {% if user.deposit_set.all %}
+                                <table class="table" border="1" style="margin-left: -15px; font-size: 13px">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Xizmat nomi</th>
+                                        <th>Summa</th>
+                                        <th>Qachon to'lagani</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for u in user.deposit_set.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td><a href="{% url 'deposit:deposit-delete' u.pk %}"
+                                                   class="action-icon" style="font-size: 15px">{{ u.service }}</a>
+                                            </td>
+                                            <td>{{ u.sum_total|intcomma }}</td>
+                                            <td>{{ u.created_at|date:"d-m-Y" }}</td>
+                                        </tr>
+                                        </form>
                                     {% endfor %}
                                     </tbody>
                                 </table>

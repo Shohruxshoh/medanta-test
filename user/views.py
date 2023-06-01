@@ -39,6 +39,7 @@ class CreateEmployeeView(AllowedRolesMixin, LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+
 class EmployeesListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
     allowed_roles = [ADMINISTRATOR, DIRECTOR]
     template_name = 'reception/director/employee/employees.html'

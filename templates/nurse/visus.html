@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col"><label for="bk_od" class="form-label">OD</label>
-                                        <select name="bk_od" id="bk_od" class="form-control form-control-lg">
+                                        <select name="bk_od" id="bk_od" class="form-control form-control-lg" required>
                                             {% for bk in form.bk %}
                                                 {{ bk }}
                                             {% endfor %}
@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="col">
                                         <label for="bk_os" class="form-label">OS</label>
-                                        <select name="bk_os" id="bk_os" class="form-control form-control-lg">
+                                        <select name="bk_os" id="bk_os" class="form-control form-control-lg"  required>
                                             {% for bk in form.bk %}
                                                 {{ bk }}
                                             {% endfor %}
@@ -57,7 +57,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="cd_od" class="form-label">OD</label>
-                                        <select name="cd_od" id="cd_od" class="form-control form-control-lg">
+                                        <select name="cd_od" id="cd_od" class="form-control form-control-lg" required>
                                             {% for cd in form.cd %}
                                                 {{ cd }}
                                             {% endfor %}
@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="col">
                                         <label for="cd_os" class="form-label">OS</label>
-                                        <select name="cd_os" id="cd_os" class="form-control form-control-lg">
+                                        <select name="cd_os" id="cd_os" class="form-control form-control-lg" required>
                                             {% for cd in form.cd %}
                                                 {{ cd }}
                                             {% endfor %}
@@ -269,7 +269,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="ck_od" class="form-label">OD</label>
-                                        <select name="ck_od" id="ck_od" class="form-control form-control-lg">
+                                        <select name="ck_od" id="ck_od" class="form-control form-control-lg" required>
                                             {% for ck in form.ck %}
                                                 {{ ck }}
                                             {% endfor %}
@@ -277,7 +277,7 @@
                                     </div>
                                     <div class="col">
                                         <label for="ck_os" class="form-label">OS</label>
-                                        <select name="ck_os" id="ck_os" class="form-control form-control-lg">
+                                        <select name="ck_os" id="ck_os" class="form-control form-control-lg" required>
                                             {% for ck in form.ck %}
                                                 {{ ck }}
                                             {% endfor %}

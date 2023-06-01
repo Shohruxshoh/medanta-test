@@ -1,0 +1,15 @@
+<div class="mb-3" style="background-color: #e8e7e7">
+    <div class="pb-2"
+         style="margin: 0 auto; width: 250px;  border: 1px solid black; background-color: #fff;text-align: center;"
+         id='DivIdToPrint'>
+        <br>
+        <h2 class="bold" id="qr-card">{{ qr_code }}</h2>
+        <img width="200px" src="https://api.qrserver.com/v1/create-qr-code/?data={{ image }}">
+        <span id="img"></span>
+        <h4 style="text-weight: 400;"> {{ birthday }}</h4>
+        <h3 style="margin: 0px;"> {{ familiya }} </h3><br>
+        <h3 style="margin: 0px; padding: 0px"> {{ ism }} </h3>
+        <h4 style="text-weight: 400; padding-bottom: 20px;">{{ phone }}</h4>
+
+    </div>
+</div>

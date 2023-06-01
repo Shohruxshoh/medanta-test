@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load partners_tags %}
 {% block content %}
     <link href="{% static 'libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet"
           type="text/css"/>
@@ -27,7 +28,7 @@
                 <div class="col-12">
                     <div class="page-title-box">
                         <div class="page-title-right">
-                    
+
                         </div>
                         <h4 class="page-title">Bemorlar Ro'yxati</h4>
                     </div>
@@ -48,12 +49,12 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-8">
-                                    
+
                                 </div><!-- end col-->
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-centered table-nowrap table-striped" id="basic-datatable">
+                                <table class="table table-centered table-nowrap table-striped" id="ddddd">
                                     <thead>
                                     <tr>
                                         <th style="width: 20px;">
@@ -66,20 +67,16 @@
                                         <th>Familiya</th>
                                         <th>Ism</th>
                                         <th>Sharifi</th>
-                                        <th>Viloyat</th>
                                         <th>Tuman</th>
-                                        <th>Address</th>
                                         <th>Tug'ilga sana</th>
-                                        <th>Passport Seria</th>
-                                        <th>Passport Number</th>
-                                        <th>JShShIR</th>
+                                        <th>Hamkor</th>
                                         <th>Jinsi</th>
-
                                         <th style="width: 85px;">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for custom in user_list %}
+{#                                        {% get_partner custom.pk as partner %}#}
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -113,22 +110,8 @@
                                                 {% endif %}
                                             </td>
                                             <td>
-                                                {% if custom.region %}
-                                                    {{ custom.region }}
-                                                {% else %}
-                                                    --
-                                                {% endif %}
-                                            </td>
-                                            <td>
                                                 {% if custom.district %}
                                                     {{ custom.district }}
-                                                {% else %}
-                                                    --
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if custom.address %}
-                                                    {{ custom.address }}
                                                 {% else %}
                                                     --
                                                 {% endif %}
@@ -140,27 +123,9 @@
                                                     --
                                                 {% endif %}
                                             </td>
-                                            <td>
-                                                {% if custom.passport_seria %}
-                                                    {{ custom.passport_seria }}
-                                                {% else %}
-                                                    --
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if custom.passport_number %}
-                                                    {{ custom.passport_number }}
-                                                {% else %}
-                                                    --
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if custom.person_id %}
-                                                    {{ custom.person_id }}
-                                                {% else %}
-                                                    --
-                                                {% endif %}
-                                            </td>
+{#                                            <td>#}
+{#                                                {{ partner }}#}
+{#                                            </td>#}
                                             <td>
                                                 {% if custom.gender == 0 %}
                                                     Erkak
@@ -172,7 +137,6 @@
                                                 <a href="{% url 'lead:customer_update' custom.pk %}"
                                                    class="action-icon"> <i
                                                         class="mdi mdi-square-edit-outline"></i></a>
-                                                {% csrf_token %}
                                                 <a class="action-icon" id="link-delete"
                                                    href="{% url 'lead:customer_delete' custom.pk %}"> <i
                                                         class="mdi mdi-delete"></i></a>
@@ -229,7 +193,6 @@
 
     {% block js %}
         <script src="{% static 'js/vendor.min.js' %}"></script>
-
         <!-- third party js -->
         <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
         <script src="{% static 'libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
@@ -247,5 +210,8 @@
         <!-- third party js ends -->
         <script src="{% static 'js/pages/datatables.init.js' %}"></script>
     {% endblock js %}
-
+    <script>
+        $('#ddddd').dataTable();
+    </script>
+    {#ddddd#}
 {% endblock content %}

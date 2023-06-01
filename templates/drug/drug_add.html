@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <link href="{% static 'libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'libs/datatables.net-select-bs5/css/select.bootstrap5.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <!-- third party css end -->
+
+    <!-- Bootstrap css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- App css -->
+    <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" id="app-style"/>
+    <!-- icons -->
+    <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- Head js -->
+    <script src="{% static 'js/head.js' %}"></script>
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Ro'yxat</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-sm-4">
+
+                                </div>
+                                <div class="col-sm-8">
+
+                                </div><!-- end col-->
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap table-striped" id="basic">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20px;">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                            </div>
+                                        </th>
+                                        <th>Dori nomi</th>
+                                        <th>Mahal</th>
+                                        <th style="width: 85px;">Boshlash vaqti</th>
+                                        <th>Vaqt oralig'i(soat)</th>
+                                        <th>Muddati(kun)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <form method="post">
+                                        {% for drug in drugs %}
+                                            {% csrf_token %}
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" name="true{{ drug.pk }}"
+                                                               class="form-check-input" id="customCheck2">
+                                                        <label class="form-check-label"
+                                                               for="customCheck2">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td class="table-user">
+                                                    <input type="text" hidden name="{{ drug.pk }}"
+                                                           value="{{ drug.pk }}">
+                                                    <a href=""
+                                                       class="text-body fw-semibold">{{ drug.name }}</a>
+                                                </td>
+                                                <td class="table-user">
+                                                    <select name="time{{ drug.pk }}" id="time"
+                                                            class="form-control form-control-lg">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="start_time{{ drug.pk }}" class="form-label">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="between_time{{ drug.pk }}" class="form-label">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="lifetime{{ drug.pk }}" class="form-label">
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <input type="submit"
+                                               class="btn btn-success waves-effect waves-light"
+                                               placeholder="Save"
+                                               value="Saqlash">
+                                    </form>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ul class="pagination pagination-rounded justify-content-end mb-0">
+                                {% if is_paginated %}
+                                    <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                        <li>
+                                            <span><a
+                                                    href="{% url 'lead:customers' %}?page={{ page_obj.previous_page_number }}">Previous</a></span>
+                                        </li>
+                                    {% endif %}
+                                    <li class="">
+                                        <span>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                                    </li>
+                                    {% if page_obj.has_next %}
+                                        <li>
+                                            <span><a
+                                                    href="{% url 'lead:customers' %}?page={{ page_obj.next_page_number }}">Next</a></span>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                                </ul>
+                            </ul>
+                        </div> <!-- end card-body-->
+                    </div>
+                </div> <!-- end card-->
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div> <!-- container -->
+    </div> <!-- content -->
+    {% block js %}
+
+        <script src="{% static 'js/vendor.min.js' %}"></script>
+
+        <!-- third party js -->
+        <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+        <!-- third party js ends -->
+        <script src="{% static 'js/pages/datatables.init.js' %}"></script>
+    {% endblock js %}
+{#    <script>#}
+{#        $('#basic').dataTable();#}
+{#    </script>#}
+{% endblock content %}

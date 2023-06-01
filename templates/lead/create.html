@@ -5,12 +5,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    {% include '_parts/messages.html' %}
                     <div class="modal-body p-4">
                         <form id="post-form" method="post">
                             {% csrf_token %}
-                            {#                            {{ form.as_p }}#}
-                            {#                            <input type="submit">#}
-
                             {#                            <div class="mb-3">#}
                             {#                                <label for="last_name" class="form-label">Klinika</label>#}
                             {#                                <select name="clinic" id="clinic" class="form-control form-control-lg" readonly>#}
@@ -24,9 +22,10 @@
                                 <input type="text" class="form-control {% if form.phone.errors %} is-invalid{% endif %}"
                                        name="phone" id="phone1" placeholder="Telefon" required>
                                 <span>Namuna:91 600 77 67</span><br>
-                                <span>{{ form.phone.errors }}</span>
+                                <span style="color: red" id="phone_id"></span>
+                                {{ form.errors }}
                                 <div id="validationServer03Feedback" class="invalid-feedback">
-                                    <span>Telefon raqam mavjud yoki xato raqam kiritdingiz</span>
+                                    <span style="font-size: 14px">Telefon raqam mavjud yoki xato raqam kiritdingiz</span>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -42,10 +41,10 @@
                                 <span>{{ form.first_name.errors }}</span>
 
                             </div>
-                            <div class="text-end">
-                                <input type="submit" class="btn btn-success waves-effect waves-light"
-                                       id="save" placeholder="Save" value="Saqlash">
-                            </div>
+                            {#                            <div class="text-end">#}
+                            {#                                <input type="submit" class="btn btn-success waves-effect waves-light"#}
+                            {#                                       id="save" placeholder="Save" value="Saqlash">#}
+                            {#                            </div>#}
                             <h3>Qo'shimcha malumotlar</h3>
                             <div class="mb-3">
                                 <label for="middle_name" class="form-label">Sharifi</label>
@@ -53,6 +52,7 @@
                                        placeholder="Sharifi" value="">
                                 <span>{{ form.first_name.errors }}</span>
                             </div>
+
                             <div class="mb-3">
                                 <label for="region" class="form-label">Viloyat</label>
                                 <select name="region" id="region" class="form-control form-control-lg">
@@ -81,6 +81,36 @@
                                 <input type="date" class="form-control" id="birthday" name="birthday"
                                        placeholder="Tug'ilgan kuni">
                             </div>
+                            <div class="mb-3">
+                                <label for="partner" class="form-label">Hamkor</label>
+                                <select name="partner" id="partner" class="form-control form-control-lg">
+                                    {% for par in partner %}
+                                        <option value="{{ par.id }}">{{ par }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3" style="background-color: #e8e7e7">
+                                <div class="pb-2"
+                                     style="margin: 0 auto; width: 250px;  border: 1px solid black; background-color: #fff;text-align: center;"
+                                     id='DivIdToPrint'>
+                                    <br>
+                                    <input type="text" hidden name="qr-pk" id="id-input">
+                                    <input type="text" hidden name="qr-code" id="id-input-code">
+                                    {#                                    <img src="{% static 'images/favicon.ico' %}" width="80px;">#}
+                                    <h2 class="bold" id="qr-card"></h2>
+                                    <span id="img"></span>
+                                    <h4 style="text-weight: 400;" id="input-birthday"></h4>
+                                    <h3><span id="input-last_name"></span> <span id="input-first_name"></span></h3>
+
+                                    <h4 id="input-phone" style="text-weight: 400; padding-bottom: 20px;"></h4>
+
+                                </div>
+                                <input type='button' id='btn' value='Chop etish ' class="btn btn-info"
+                                       style="margin: 0 auto;" onclick='printDiv();'>
+                            </div>
+                            <button type="button" id="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                QR Code olish
+                            </button>
                             <div class="text-end">
                                 <input type="submit" class="btn btn-success waves-effect waves-light"
                                        id="save" placeholder="Save" value="Saqlash">
@@ -96,6 +126,8 @@
             </div>
         </div>
     </div>
+
+
     {% block js %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"></script>
         <script>
@@ -130,9 +162,96 @@
 
             });
         </script>
+        <script>
+            function printDiv() {
+
+                var divToPrint = document.getElementById('DivIdToPrint');
+
+                var newWin = window.open('Print-Window');
+
+                newWin.document.open();
+
+                newWin.document.write('<!DOCTYPE html><html><body onload="window.print()" style="text-align: center">' + divToPrint.innerHTML + '</body></html>');
+
+                newWin.document.close();
+
+                setTimeout(function () {
+                    newWin.close();
+                }, 100);
+
+            }
+        </script>
+        <script>
+            $("#phone1")
+                .on("keyup", function () {
+                    var value = $(this).val();
+                    $("#input-phone").text(value);
+                })
+                .trigger("keyup");
+            $("#birthday").on("input", function () {
+                // Print entered value in a div box
+                $("#input-birthday").text($(this).val());
+            });
+            {#$("#birthday")#}
+            {#    .on("keyup", function () {#}
+            {#        var value = $(this).val();#}
+            {#        $("#input-birthday").text(value);#}
+            {#    })#}
+            {#    .trigger("keyup");#}
+            $("#last_name")
+                .on("keyup", function () {
+                    var value = $(this).val();
+                    $("#input-last_name").text(value);
+                })
+                .trigger("keyup");
+            $("#first_name")
+                .on("keyup", function () {
+                    var value = $(this).val();
+                    $("#input-first_name").text(value);
+                })
+                .trigger("keyup");
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#button").click(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{% url "patient:qr" %}',
+                        success: function (response) {
+                            alert(response.qr_code.qr_code);
+                            $("#qr-card").html(response.qr_code.qr_code)
+                            $("#img").html(`<img width="200px" src="/${response.qr_code.image}" alt="img">`)
+                            $("#id-input").val(response.qr_code.pk)
+                            $("#id-input-code").val(response.qr_code.qr_code)
+                        }
+                    })
+                    alert(url)
+                })
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#phone1").change(function () {
+                    $.ajax({
+                        url: '{% url "lead:check-phone" %}',
+                        type: 'GET',
+                        data: {
+                            "phone": $("#phone1").val()
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.is_has) {
+                                {#$("#phone_id").text("Bunday Telefon raqam mavjud")#}
+                                $("#phone1").addClass("is-invalid");
+                            } else {
+                                $("#phone1").removeClass("is-invalid");
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
     {% endblock js %}
-
-
 
     {#    <script>#}
     {#        $(document).ready(function () {#}

@@ -8,7 +8,8 @@ from diagnostic.views import VisusCreateView, VisusPatientDetailView, PatientCom
     PupilOfTheEyeUpdateView, PupilOfTheEyeDeleteView, LensListView, LensCreateView, LensUpdateView, LensDeleteView, \
     VitreousBodyListView, VitreousBodyCreateView, VitreousBodyUpdateView, VitreousBodyDeleteView, OcularFundusListView, \
     OcularFundusCreateView, OcularFundusUpdateView, OcularFundusDeleteView, DiagnosisListView, DiagnosisCreateView, \
-    DiagnosisUpdateView, DiagnosisDeleteView, OphthalmologyStatusDetailView, OperationView, OphthalmologyStatusListNowHave
+    DiagnosisUpdateView, DiagnosisDeleteView, OphthalmologyStatusDetailView, OperationView, \
+    OphthalmologyStatusListNowHave
 
 app_name = 'diagnostic'
 

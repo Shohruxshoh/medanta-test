@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h4 class="page-title">Operatsiya</h4>
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="modal-body p-4">
+                        <form id="post-form" method="post">
+                            {% csrf_token %}
+                            {{ form.errors }}
+                        <div class="mb-3">
+                                <input type="text" hidden name="patient" value="{{ id }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="xizmat" class="form-label">Xizmat</label>
+                                <select name="service" id="xizmat" class="form-control form-control-lg">
+                                    {% for service in form %}
+                                        <option value="{{ service.id }}">{{ service }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn btn-success waves-effect waves-light"
+                                       placeholder="Save" value="Saqlash">
+                                <a href="{% url 'drug:drugs' %}">
+                                    <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-dismiss="modal">Bekor qolish
+                                    </button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

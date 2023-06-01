@@ -1,28 +1,19 @@
 from django.db import models
-from service.models import Installment
-from user.models import User, PARTNER
+from service.models import Service
+from user.models import User
 
 
 # Create your models here.
 
-class BHM(models.Model):
-    sum = models.IntegerField()
-    is_active = models.BooleanField(default=False)
-    start_date = models.DateField()
-    stop_date = models.DateField()
-
-    def __str__(self):
-        return str(self.sum * 0.7)
-
 
 class Deposit(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bhm_sum = models.ForeignKey(BHM, on_delete=models.CASCADE)
-    installment = models.ForeignKey(Installment, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    sum_total = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.phone} {self.bhm_sum}"
+        return f"{self.user.phone} {self.sum_total}"
 
 
 class Partner(models.Model):
@@ -34,3 +25,8 @@ class Partner(models.Model):
 
     def __str__(self):
         return f"Hamkor: {self.partner}"
+
+
+class PartnerAndPatient(models.Model):
+    partner = models.ForeignKey(Partner, on_delete=models.SET_NULL, null=True, blank=True)
+    patient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)

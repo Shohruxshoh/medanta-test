@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content mt-3">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            {{ operations }}
+                            <form id="post-form" method="post">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="user" class="form-label">Bemor</label>
+                                    <input type="text" hidden name="user_id" value="{{ operations.patient.patient.pk }}">
+                                    <input type="text" class="form-control" name="user" id="user"
+                                           placeholder="{{ operations.patient.patient.first_name }}"
+                                           value="{{ operations.patient.patient.first_name }}" readonly>
+                                    <span>{{ form.title.errors }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="service" class="form-label">Xizmat</label>
+                                    <input type="text" hidden name="service_id" value="{{ operations.service.pk }}">
+                                    <input type="text" class="form-control" name="service" id="service"
+                                           placeholder="{{ operations.service.title }}"
+                                           value="{{ operations.service.title }}" readonly>
+                                    <span>{{ form.title.errors }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="percentage" class="form-label">Foiz Chegirma</label>
+                                    <input type="text" class="form-control" name="percentage" id="percentage"
+                                           placeholder="foizga kiriting">
+                                    <span>{{ form.title.errors }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="operation_came_time" class="form-label">Qachon kelishi</label>
+                                    <input type="date" class="form-control" name="operation_came_time"
+                                           id="operation_came_time">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="checkbox" name="paid" id="paid">
+                                    <label for="paid" class="form-label">To'laganligi holati</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="payment_method" class="form-label">To'lov usuli</label>
+                                    <select name="payment_method" id="payment_method"
+                                            class="form-control form-control-lg">
+                                        <option value="0">Naqd</option>
+                                        <option value="1">Plastik</option>
+                                        <option value="2">Muddatli</option>
+                                        <option value="3">Qarzga</option>
+                                    </select>
+                                </div>
+                                <div class="text-end">
+                                    <input type="submit" class="btn btn-success waves-effect waves-light"
+                                           placeholder="Save" value="Saqlash">
+                                    <a href="{% url 'drug:operation-list' %}">
+                                        <button type="button" class="btn btn-danger waves-effect waves-light"
+                                                data-bs-dismiss="modal">Bekor qolish
+                                        </button>
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

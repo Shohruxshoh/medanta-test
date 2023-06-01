@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
 from django.views import View
 from service.models import PayInstallmentPeriod, Debts
-from card.models import CardUser
+from card.models import CardUser, Post, Post1
 
 
 # Create your views here.
@@ -67,3 +67,29 @@ class DebtsCreateView(LoginRequiredMixin, View):
     #             curl = CARD_MONEY / 4
     #             curl = CARD_MONEY / 6
     #             curl = CARD_MONEY / 10
+
+
+class PostCreate(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        Post.objects.create(title=request.POST.get("title"))
+        return render(request, 'abs.html')
+
+
+class PostList(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'abs.html')
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get("title") is not None:
+            Post.objects.create(title=request.POST.get("title"))
+        return render(request, 'abs.html')
+
+
+class Post1List(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'abs.html')
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get("title") is not None:
+            Post1.objects.create(title=request.POST.get("title"))
+        return render(request, 'abs.html')
