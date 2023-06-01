@@ -141,12 +141,14 @@ class EyelidsUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
 
 
 class EyelidsDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyelids
     template_name = 'diagnostic/eyelids/eyelid-delete.html'
     success_url = '/diagnostic/eyelids'
 
 
 class EyeballListView(AllowedRolesMixin, LoginRequiredMixin, ListView):
+    allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyeball
     paginate_by = 50
     template_name = "diagnostic/eyeball/eyeballs.html"
@@ -174,14 +176,14 @@ class EyeballUpdateView(AllowedRolesMixin, LoginRequiredMixin, UpdateView):
     model = Eyeball
     template_name = 'diagnostic/eyeball/eyeball-update.html'
     fields = ['title']
-    success_url = '/diagnostic/eyeball'
+    success_url = '/diagnostic/eyeballs'
 
 
 class EyeballDeleteView(AllowedRolesMixin, LoginRequiredMixin, DeleteView):
     allowed_roles = [ADMINISTRATOR, DOCTOR]
     model = Eyeball
     template_name = 'diagnostic/eyeball/eyeball-delete.html'
-    success_url = '/diagnostic/eyeball'
+    success_url = '/diagnostic/eyeballs'
 
 
 class ConjunctivaListView(AllowedRolesMixin, LoginRequiredMixin, ListView):

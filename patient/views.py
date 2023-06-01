@@ -250,13 +250,14 @@ from django.http import JsonResponse
 
 def qr_gen(request):
     qr = QrCodeGenerator1.objects.filter(clinic_id=request.user.clinic.id).last()
+    id = CardToUser.objects.filter(clinic_id=request.user.clinic.id).last()
     if qr is not None:
         if qr or qr.qr_code_img:
             qr1 = qr_code_generator_number(qr.qr_code)
             print(qr1)
             img_name1 = 'qr' + str(qr1) + '.ico'
             os.remove(f'static/images/{img_name1}')
-        qr = qr_code_generator_number(qr.qr_code + 1)
+        qr = qr_code_generator_number(int(id.card_id) + 1)
         qr_generte = qr_generator(request, qr)
         img_name = 'qr' + str(qr) + '.ico'
         context = {"qr_code": qr, "image": f'static/images/{img_name}', 'pk': qr_generte.pk}

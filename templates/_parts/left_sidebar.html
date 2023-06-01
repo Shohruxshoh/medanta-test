@@ -95,7 +95,7 @@
                                         <a class="nav-link" href="{% url 'accountant:accountant-list' %}">Hisobot </a>
                                     </li>
                                 {% endif %}
-                                {% if request.user.role == 0 and request.user.role == 9 %}
+                                {% if request.user.role == 0 or request.user.role == 9 %}
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'glasses:glasses-list' %}">Ko'z oynaklar</a>
                                     </li>
