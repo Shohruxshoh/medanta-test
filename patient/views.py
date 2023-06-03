@@ -272,13 +272,8 @@ def qr_gen(request):
 
 
 def qr_code_second_generator(request, pk):
-    print(request.get_host())
+    aa = request.get_host()
     host = request.META['REMOTE_ADDR']
-    print(host)
-    import socket
-    print(socket.gethostbyname(socket.gethostname()))
-    print(socket.gethostbyname(socket.getfqdn()))
-    name = socket.gethostbyname(socket.gethostname())
     user = User.objects.get(pk=pk)
     card_to_user = CardToUser.objects.filter(clinic_id=request.user.clinic.id, patient_id=user.pk).last()
     familiya = user.last_name
@@ -287,7 +282,7 @@ def qr_code_second_generator(request, pk):
     phone = user.phone
     data = f'http://{request.get_host()}/patient/card-id/{request.user.clinic.id}/{card_to_user.card_id}'
     context = {"qr_code": card_to_user.card_id, "image": data, "familiya": familiya, "ism": ism, "birthday": birthday,
-               "phone": phone, "name": name}
+               "phone": phone, "name": host, 'host':aa}
     return render(request, "print/print.html", context)
 
 
