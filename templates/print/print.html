@@ -3,6 +3,7 @@
          style="margin: 0 auto; width: 250px;  border: 1px solid black; background-color: #fff;text-align: center;"
          id='DivIdToPrint'>
         <br>
+        <h1>{{name}}</h1>
         <h2 class="bold" id="qr-card">{{ qr_code }}</h2>
         <img width="200px" src="https://api.qrserver.com/v1/create-qr-code/?data={{ image }}">
         <span id="img"></span>
